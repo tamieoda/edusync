@@ -263,6 +263,9 @@
   <section id="tab-alunos" class="tab active">
     <div class="toolbar">
       <button class="btn" id="btn-add-student">+ Novo Aluno</button>
+      <button class="btn secondary" id="btn-import-csv">📥 Importar CSV</button>
+      <button class="btn secondary" id="btn-template-csv">📋 Baixar modelo</button>
+      <input type="file" id="csv-import-file" accept=".csv,text/csv" style="display:none" />
       <input type="text" id="student-search" placeholder="Pesquisar aluno..." style="max-width: 260px;" />
     </div>
     <div class="toolbar">
@@ -1566,6 +1569,176 @@ function saveConfig() {
 }
 
 // ================================================================
+// IMPORT / EXPORT CSV (alunos)
+// ================================================================
+const CSV_HEADERS = [
+  { key: 'nome',           aliases: ['nome', 'aluno', 'nome do aluno'] },
+  { key: 'endereco',       aliases: ['endereco', 'endereço', 'morada'] },
+  { key: 'contato',        aliases: ['contato', 'contacto', 'telefone', 'telemovel', 'telemóvel'] },
+  { key: 'contribuinte',   aliases: ['contribuinte', 'nif', 'nº contribuinte'] },
+  { key: 'email',          aliases: ['email', 'e-mail', 'mail'] },
+  { key: 'dataNascimento', aliases: ['data nascimento', 'nascimento', 'data de nascimento', 'dt nascimento'] },
+  { key: 'dataInicioCurso',aliases: ['inicio curso', 'início curso', 'data inicio', 'data início', 'inicio do curso', 'início do curso', 'data inicio curso'] },
+  { key: 'mensalidade',    aliases: ['mensalidade', 'valor', 'valor mensalidade', 'preco', 'preço'] }
+];
+
+function normalizeHeader(h) {
+  return String(h || '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')  // remove acentos
+    .toLowerCase().trim().replace(/\s+/g, ' ').replace(/^"|"$/g, '');
+}
+
+function mapHeaderToKey(h) {
+  const n = normalizeHeader(h);
+  for (const def of CSV_HEADERS) {
+    if (def.aliases.some(a => normalizeHeader(a) === n)) return def.key;
+  }
+  return null;
+}
+
+function parseDateInput(s) {
+  if (!s) return '';
+  s = String(s).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
+  if (m) return `${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`;
+  return '';
+}
+
+function parseMoneyInput(s) {
+  if (s === '' || s == null) return '';
+  let str = String(s).replace(/€/g, '').replace(/\s/g, '').trim();
+  // Trata "80,00" ou "1.234,56" → "1234.56"
+  if (str.includes(',')) {
+    str = str.replace(/\./g, '').replace(',', '.');
+  }
+  const n = Number(str);
+  return isNaN(n) ? '' : n;
+}
+
+function parseCSV(text) {
+  // Remove BOM
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+  // Detecta separador na primeira linha não vazia
+  const firstLine = (text.split(/\r?\n/).find(l => l.trim().length)) || '';
+  const semis = (firstLine.match(/;/g) || []).length;
+  const commas = (firstLine.match(/,/g) || []).length;
+  const tabs = (firstLine.match(/\t/g) || []).length;
+  let sep = ',';
+  if (tabs > semis && tabs > commas) sep = '\t';
+  else if (semis >= commas) sep = ';';
+
+  const rows = [];
+  let cur = [], field = '', i = 0, inQuotes = false;
+  while (i < text.length) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"' && text[i+1] === '"') { field += '"'; i += 2; continue; }
+      if (c === '"') { inQuotes = false; i++; continue; }
+      field += c; i++;
+    } else {
+      if (c === '"') { inQuotes = true; i++; continue; }
+      if (c === sep) { cur.push(field); field = ''; i++; continue; }
+      if (c === '\r') { i++; continue; }
+      if (c === '\n') {
+        cur.push(field); rows.push(cur); cur = []; field = ''; i++; continue;
+      }
+      field += c; i++;
+    }
+  }
+  if (field !== '' || cur.length) { cur.push(field); rows.push(cur); }
+  return rows.filter(r => r.some(c => String(c).trim() !== ''));
+}
+
+function downloadCSVTemplate() {
+  const headers = ['nome','endereco','contato','contribuinte','email','data_nascimento','inicio_curso','mensalidade'];
+  const exemplo1 = ['João Silva','Rua das Flores 12','912345678','123456789','joao@email.com','01/01/2000','15/01/2026','80,00'];
+  const exemplo2 = ['Maria Santos','Av. da Liberdade 100','913333333','987654321','maria@email.com','15/05/1995','01/02/2026','80,00'];
+  const csv = [headers, exemplo1, exemplo2]
+    .map(row => row.map(c => /[;,"\n]/.test(c) ? '"' + c.replace(/"/g, '""') + '"' : c).join(';'))
+    .join('\n');
+  // BOM para Excel reconhecer UTF-8
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'modelo-alunos.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importCSVFile(file) {
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const rows = parseCSV(ev.target.result);
+      if (rows.length < 2) { alert('CSV vazio ou sem dados.'); return; }
+
+      const headerRow = rows[0];
+      const keyMap = headerRow.map(mapHeaderToKey);
+
+      // Confere se tem coluna nome
+      if (!keyMap.includes('nome')) {
+        alert('O CSV precisa ter uma coluna "nome".\n\nColunas reconhecidas: ' + CSV_HEADERS.map(d => d.key).join(', '));
+        return;
+      }
+
+      const dataRows = rows.slice(1);
+      const novos = [];
+      const erros = [];
+
+      dataRows.forEach((row, lineIdx) => {
+        const obj = { id: uuid(), status: 'ativo', aulas: [], pagamentos: [] };
+        // Inicializa todos os campos
+        CSV_HEADERS.forEach(d => obj[d.key] = '');
+        // Popula com os dados da linha
+        row.forEach((value, colIdx) => {
+          const key = keyMap[colIdx];
+          if (!key) return;
+          const v = String(value || '').trim();
+          if (key === 'dataNascimento' || key === 'dataInicioCurso') {
+            obj[key] = parseDateInput(v);
+            if (v && !obj[key]) erros.push(`Linha ${lineIdx + 2}: data inválida em "${headerRow[colIdx]}" → "${v}"`);
+          } else if (key === 'mensalidade') {
+            obj[key] = parseMoneyInput(v);
+          } else {
+            obj[key] = v;
+          }
+        });
+
+        if (!obj.nome) {
+          erros.push(`Linha ${lineIdx + 2}: nome em branco — ignorada.`);
+          return;
+        }
+        if (!obj.dataInicioCurso) obj.dataInicioCurso = todayStr();
+        novos.push(obj);
+      });
+
+      if (novos.length === 0) {
+        alert('Nenhum aluno válido encontrado no CSV.\n\nProblemas:\n' + erros.slice(0, 10).join('\n'));
+        return;
+      }
+
+      const preview = novos.slice(0, 8).map(s => `• ${s.nome}${s.contato ? ' — ' + s.contato : ''}`).join('\n');
+      const restante = novos.length > 8 ? `\n... e mais ${novos.length - 8}` : '';
+      const errMsg = erros.length > 0 ? `\n\n⚠ Avisos:\n${erros.slice(0, 5).join('\n')}${erros.length > 5 ? `\n... e mais ${erros.length - 5}` : ''}` : '';
+
+      const ok = confirm(
+        `Importar ${novos.length} aluno(s)?\n\n${preview}${restante}${errMsg}\n\nOs alunos serão ADICIONADOS aos existentes (não substituem).`
+      );
+      if (!ok) return;
+
+      state.students.push(...novos);
+      scheduleSave();
+      renderStudents();
+      alert(`✓ ${novos.length} aluno(s) importado(s) com sucesso.`);
+    } catch (e) {
+      console.error(e);
+      alert('Erro ao processar CSV: ' + e.message);
+    }
+  };
+  reader.readAsText(file, 'UTF-8');
+}
+
+// ================================================================
 // IMPORT / EXPORT JSON
 // ================================================================
 function exportJSON() {
@@ -1621,6 +1794,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('btn-add-student').addEventListener('click', addStudent);
   document.getElementById('student-search').addEventListener('input', renderStudents);
+  document.getElementById('btn-import-csv').addEventListener('click', () => document.getElementById('csv-import-file').click());
+  document.getElementById('btn-template-csv').addEventListener('click', downloadCSVTemplate);
+  document.getElementById('csv-import-file').addEventListener('change', (e) => {
+    if (e.target.files[0]) importCSVFile(e.target.files[0]);
+    e.target.value = ''; // permite re-importar o mesmo arquivo
+  });
 
   document.querySelectorAll('#filter-buttons button').forEach(b => {
     b.addEventListener('click', () => {
