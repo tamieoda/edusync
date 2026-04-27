@@ -9,6 +9,7 @@
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
     --success: #16a34a;
+    --success-dark: #15803d;
     --danger: #dc2626;
     --warning: #d97706;
     --bg: #f8fafc;
@@ -39,23 +40,12 @@
     top: 0;
     z-index: 100;
   }
-  header h1 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 600;
-  }
+  header h1 { margin: 0; font-size: 20px; font-weight: 600; }
   #drive-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 13px;
-    color: var(--muted);
+    display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted);
   }
   #drive-status .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--muted);
+    width: 8px; height: 8px; border-radius: 50%; background: var(--muted);
   }
   #drive-status.connected .dot { background: var(--success); }
   #drive-status.saving .dot { background: var(--warning); animation: pulse 1s infinite; }
@@ -63,308 +53,188 @@
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
 
   nav {
-    background: var(--card);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    display: flex;
-    gap: 4px;
-    overflow-x: auto;
+    background: var(--card); border-bottom: 1px solid var(--border);
+    padding: 0 24px; display: flex; gap: 4px; overflow-x: auto;
   }
   nav button {
-    background: none;
-    border: none;
-    padding: 12px 16px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--muted);
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
+    background: none; border: none; padding: 12px 16px; cursor: pointer;
+    font-size: 14px; color: var(--muted); border-bottom: 2px solid transparent; white-space: nowrap;
   }
-  nav button.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
-    font-weight: 500;
-  }
+  nav button.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 500; }
   nav button:hover { color: var(--text); }
 
-  main {
-    padding: 24px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
+  main { padding: 24px; max-width: 1400px; margin: 0 auto; }
   .tab { display: none; }
   .tab.active { display: block; }
 
   .toolbar {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-    flex-wrap: wrap;
-    align-items: center;
+    display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; align-items: center;
   }
 
   button.btn {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
+    background: var(--primary); color: white; border: none; padding: 8px 14px;
+    border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 500;
   }
   button.btn:hover { background: var(--primary-dark); }
   button.btn.secondary { background: white; color: var(--text); border: 1px solid var(--border); }
   button.btn.secondary:hover { background: var(--bg); }
   button.btn.danger { background: var(--danger); }
   button.btn.success { background: var(--success); }
+  button.btn.success:hover { background: var(--success-dark); }
+  button.btn.warning { background: var(--warning); }
+  button.btn.small { padding: 4px 10px; font-size: 12px; }
+  button.btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
   input[type="text"], input[type="email"], input[type="tel"], input[type="date"],
-  input[type="number"], select, textarea {
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 8px 10px;
-    font-size: 14px;
-    font-family: inherit;
-    background: white;
-    color: var(--text);
-    width: 100%;
+  input[type="number"], input[type="month"], select, textarea {
+    border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+    font-size: 14px; font-family: inherit; background: white; color: var(--text); width: 100%;
   }
   input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--primary);
+    outline: none; border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
   }
+  input[readonly], select[disabled] { background: var(--bg); cursor: default; }
 
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; margin-bottom: 12px; box-shadow: var(--shadow);
   }
 
-  .student-card .header-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto auto;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
+  /* ========= Aluno em modo COMPACTO (lista) ========= */
+  .student-row {
+    display: flex; align-items: center; gap: 12px; padding: 4px 0;
   }
-  .student-card .fields-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
-    margin-bottom: 12px;
+  .student-row .name {
+    flex: 1; font-size: 16px; font-weight: 500;
   }
-  .student-card .field {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .student-card .field label {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
+  .student-row .badges { display: flex; gap: 6px; }
+  .student-row .actions { display: flex; gap: 6px; }
+
+  .student-card.dropout .student-row .name {
+    color: var(--muted); text-decoration: line-through;
   }
 
-  .student-card .stats {
-    display: flex;
-    gap: 16px;
-    padding: 10px 12px;
-    background: var(--bg);
-    border-radius: 8px;
-    font-size: 13px;
-    flex-wrap: wrap;
-  }
-  .student-card .stats .stat {
-    display: flex;
-    flex-direction: column;
-  }
-  .student-card .stats .stat .label {
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  .student-card .stats .stat .value {
-    font-size: 18px;
-    font-weight: 600;
-  }
-  .student-card .stats .stat.positive .value { color: var(--success); }
-  .student-card .stats .stat.negative .value { color: var(--danger); }
-  .student-card .stats .stat.warn .value { color: var(--warning); }
-
-  .expand-toggle {
-    background: none;
-    border: 1px solid var(--border);
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .student-details {
-    display: none;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px dashed var(--border);
-  }
+  /* ========= Detalhes expandido ========= */
+  .student-details { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); }
   .student-card.expanded .student-details { display: block; }
 
-  .sub-section {
-    margin-top: 16px;
+  .sub-tabs {
+    display: flex; gap: 4px; margin-bottom: 12px; border-bottom: 1px solid var(--border);
   }
-  .sub-section h4 {
-    margin: 0 0 8px 0;
-    font-size: 14px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .sub-tabs button {
+    background: none; border: none; padding: 8px 14px; cursor: pointer;
+    font-size: 14px; color: var(--muted); border-bottom: 2px solid transparent; font-weight: 500;
   }
+  .sub-tabs button.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+  .sub-section { display: none; }
+  .sub-section.active { display: block; }
+
+  /* ========= Modo locked vs editing ========= */
+  .field-row {
+    display: grid; grid-template-columns: 160px 1fr; gap: 8px; padding: 8px 0;
+    border-bottom: 1px solid var(--border); align-items: center;
   }
-  table th, table td {
-    text-align: left;
-    padding: 8px;
-    border-bottom: 1px solid var(--border);
+  .field-row .label { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .field-row .value { font-size: 14px; }
+  .field-row .value.empty { color: var(--muted); font-style: italic; }
+
+  .perfil-actions { margin-top: 14px; display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* ========= Stats ========= */
+  .stats {
+    display: flex; gap: 16px; padding: 10px 12px; background: var(--bg);
+    border-radius: 8px; font-size: 13px; flex-wrap: wrap; margin-top: 12px;
   }
+  .stats .stat { display: flex; flex-direction: column; }
+  .stats .stat .label {
+    color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .stats .stat .value { font-size: 18px; font-weight: 600; }
+  .stats .stat.positive .value { color: var(--success); }
+  .stats .stat.negative .value { color: var(--danger); }
+  .stats .stat.warn .value { color: var(--warning); }
+
+  /* ========= Tabela ========= */
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table th, table td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
   table th {
-    font-weight: 500;
-    color: var(--muted);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 500; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   table td input, table td select { font-size: 13px; padding: 6px 8px; }
-  table td.actions { width: 170px; text-align: right; }
-  table td.actions .btn-group { display: flex; gap: 4px; justify-content: flex-end; }
-  .btn.saved-flash { background: #16a34a !important; transform: scale(1.05); transition: all 0.2s; }
+  table td.actions-cell { width: 180px; text-align: right; }
+  table td.actions-cell .btn-group { display: flex; gap: 4px; justify-content: flex-end; }
 
-  .checkbox-field {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    cursor: pointer;
-    user-select: none;
-  }
-  .checkbox-field input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-  }
+  tr.editing { background: #fffbeb; }
 
+  /* ========= Cards de resumo ========= */
   .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; margin-bottom: 16px;
   }
   .summary-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
     padding: 14px 16px;
   }
   .summary-card .label {
-    font-size: 12px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
   }
-  .summary-card .value {
-    font-size: 24px;
-    font-weight: 600;
-    margin-top: 4px;
-  }
+  .summary-card .value { font-size: 24px; font-weight: 600; margin-top: 4px; }
   .summary-card.negative .value { color: var(--danger); }
   .summary-card.positive .value { color: var(--success); }
 
-  .alert {
-    padding: 12px 14px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    font-size: 14px;
-  }
-  .alert.warn {
-    background: #fef3c7;
-    border: 1px solid #fcd34d;
-    color: #92400e;
-  }
-  .alert.danger {
-    background: #fee2e2;
-    border: 1px solid #fca5a5;
-    color: #991b1b;
-  }
-  .alert.info {
-    background: #dbeafe;
-    border: 1px solid #93c5fd;
-    color: #1e40af;
-  }
+  .alert { padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 14px; }
+  .alert.warn { background: #fef3c7; border: 1px solid #fcd34d; color: #92400e; }
+  .alert.danger { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+  .alert.info { background: #dbeafe; border: 1px solid #93c5fd; color: #1e40af; }
 
-  .month-selector {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+  .month-selector { display: flex; gap: 8px; align-items: center; }
   .month-selector input { width: auto; }
 
-  .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--muted);
-  }
+  .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
 
   .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 500;
-    background: var(--bg);
-    color: var(--muted);
+    display: inline-block; padding: 2px 8px; border-radius: 12px;
+    font-size: 11px; font-weight: 500; background: var(--bg); color: var(--muted);
   }
   .badge.success { background: #dcfce7; color: #166534; }
   .badge.warn { background: #fef3c7; color: #92400e; }
   .badge.danger { background: #fee2e2; color: #991b1b; }
+  .badge.info { background: #dbeafe; color: #1e40af; }
+  .badge.dropout { background: #f1f5f9; color: #475569; }
 
   .danger-text { color: var(--danger); font-weight: 600; }
   .success-text { color: var(--success); font-weight: 600; }
 
   hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
+  /* Filtros */
+  .filter-buttons { display: flex; gap: 4px; flex-wrap: wrap; }
+  .filter-buttons button {
+    background: white; border: 1px solid var(--border); padding: 6px 12px; border-radius: 16px;
+    font-size: 13px; cursor: pointer;
+  }
+  .filter-buttons button.active {
+    background: var(--primary); color: white; border-color: var(--primary);
+  }
+
   @media (max-width: 700px) {
     main { padding: 12px; }
     header { padding: 12px; }
-    .student-card .header-row { grid-template-columns: 1fr auto; }
-    .student-card .header-row > *:nth-child(n+2):nth-child(-n+3) { display: none; }
+    .field-row { grid-template-columns: 1fr; }
+    .student-row { flex-wrap: wrap; }
   }
 
-  /* History modal */
+  /* Modal */
   .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 200; align-items: center; justify-content: center; padding: 20px;
   }
   .modal-overlay.open { display: flex; }
   .modal {
-    background: white;
-    border-radius: 12px;
-    max-width: 700px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 20px;
+    background: white; border-radius: 12px; max-width: 700px; width: 100%;
+    max-height: 90vh; overflow-y: auto; padding: 20px;
   }
   .modal h2 { margin-top: 0; }
 </style>
@@ -393,7 +263,17 @@
   <section id="tab-alunos" class="tab active">
     <div class="toolbar">
       <button class="btn" id="btn-add-student">+ Novo Aluno</button>
-      <input type="text" id="student-search" placeholder="Pesquisar aluno..." style="max-width: 300px;" />
+      <input type="text" id="student-search" placeholder="Pesquisar aluno..." style="max-width: 260px;" />
+    </div>
+    <div class="toolbar">
+      <span style="font-size:13px;color:var(--muted)">Filtros:</span>
+      <div class="filter-buttons" id="filter-buttons">
+        <button data-filter="ativos" class="active">Ativos</button>
+        <button data-filter="nao-pagou">Não pagou (mês atual)</button>
+        <button data-filter="recibo-pendente">Recibo pendente</button>
+        <button data-filter="dropout">Drop Out</button>
+        <button data-filter="todos">Todos</button>
+      </div>
       <span style="flex:1"></span>
       <span class="badge" id="student-count">0 alunos</span>
     </div>
@@ -419,7 +299,7 @@
             <th>Categoria</th>
             <th>Descrição</th>
             <th style="width:130px">Valor (€)</th>
-            <th class="actions"></th>
+            <th style="width:200px"></th>
           </tr>
         </thead>
         <tbody id="expenses-tbody"></tbody>
@@ -437,20 +317,18 @@
         <label style="font-size:14px;color:var(--muted)">Mês de referência:</label>
         <input type="month" id="report-month" />
       </div>
-      <button class="btn" id="btn-export-pdf">📄 Exportar PDF</button>
+      <button class="btn" id="btn-export-pdf">📄 Exportar PDF Detalhado</button>
     </div>
-
     <div id="report-alerts"></div>
-
     <div class="summary-grid" id="report-summary"></div>
-
     <div class="card">
       <h3 style="margin-top:0">Detalhamento por Aluno</h3>
       <table>
         <thead>
           <tr>
             <th>Aluno</th>
-            <th>Aulas no mês</th>
+            <th>Aulas regulares</th>
+            <th>Trial / Avulsa</th>
             <th>Saldo total</th>
             <th>Pagou no mês</th>
             <th>Recibo</th>
@@ -459,7 +337,6 @@
         <tbody id="report-students-tbody"></tbody>
       </table>
     </div>
-
     <div class="card">
       <h3 style="margin-top:0">Despesas do Mês</h3>
       <table>
@@ -477,17 +354,18 @@
       <h3 style="margin-top:0">Google Drive</h3>
       <p style="color:var(--muted);font-size:14px">
         Para ativar a sincronização automática, cole abaixo o seu <strong>Client ID</strong> do Google Cloud (OAuth 2.0).
-        Veja instruções no fim desta página.
       </p>
-      <div class="field" style="margin-bottom:12px">
-        <label style="font-size:12px;color:var(--muted)">Google OAuth Client ID</label>
+      <div class="field-row" style="grid-template-columns: 200px 1fr;">
+        <label class="label">Google OAuth Client ID</label>
         <input type="text" id="cfg-client-id" placeholder="xxxxx.apps.googleusercontent.com" />
       </div>
-      <div class="field" style="margin-bottom:12px">
-        <label style="font-size:12px;color:var(--muted)">Nome do arquivo no Drive</label>
+      <div class="field-row" style="grid-template-columns: 200px 1fr;">
+        <label class="label">Nome do arquivo no Drive</label>
         <input type="text" id="cfg-filename" placeholder="gerenciamento-alunos.json" />
       </div>
-      <button class="btn" id="btn-save-config">Salvar Configurações</button>
+      <div style="margin-top:12px">
+        <button class="btn" id="btn-save-config">Salvar Configurações</button>
+      </div>
     </div>
 
     <div class="card">
@@ -502,27 +380,10 @@
         <button class="btn danger" id="btn-reset">🗑 Apagar Todos os Dados</button>
       </div>
     </div>
-
-    <div class="card">
-      <h3 style="margin-top:0">Como configurar o Google Drive</h3>
-      <ol style="font-size:14px;line-height:1.7">
-        <li>Acesse <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a> e crie um projeto novo (ou use um existente).</li>
-        <li>No menu, vá em <strong>APIs &amp; Services → Library</strong> e ative a <strong>Google Drive API</strong>.</li>
-        <li>Vá em <strong>APIs &amp; Services → OAuth consent screen</strong>, configure como <em>External</em>, preencha os dados básicos e adicione seu email como usuário de teste.</li>
-        <li>Vá em <strong>APIs &amp; Services → Credentials → Create Credentials → OAuth client ID</strong>.</li>
-        <li>Tipo de aplicativo: <strong>Web application</strong>.</li>
-        <li>Em <strong>Authorized JavaScript origins</strong>, adicione a URL onde esta página estará hospedada (ex.: <code>https://seuuser.github.io</code>) ou <code>http://localhost:8000</code> se for testar localmente.</li>
-        <li>Copie o <strong>Client ID</strong> gerado e cole no campo acima.</li>
-        <li>Clique em <strong>Conectar Drive</strong> no topo da página.</li>
-      </ol>
-      <div class="alert info">
-        <strong>Importante:</strong> o arquivo HTML precisa estar hospedado em uma URL (não abrir como <code>file://</code>) para o OAuth funcionar. Use GitHub Pages, Netlify, ou rode um servidor local com <code>python -m http.server</code>.
-      </div>
-    </div>
   </section>
 </main>
 
-<!-- Modal: histórico de aluno -->
+<!-- Modal: histórico -->
 <div class="modal-overlay" id="history-modal">
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center">
@@ -539,10 +400,11 @@
 
 <script>
 // ================================================================
-// SISTEMA DE GERENCIAMENTO — APLICAÇÃO PRINCIPAL
+// SISTEMA DE GERENCIAMENTO — v2
+// Mudanças: status aluno, tipo de aula, número de recibo,
+// modo lock/edit, lista compacta com Detalhes, filtros, datas pt-PT
 // ================================================================
 
-// ---------- Estado ----------
 const state = {
   students: [],
   expenses: [],
@@ -553,20 +415,38 @@ const state = {
   }
 };
 
-const EXPENSE_CATEGORIES = [
-  'Aluguel',
-  'Luz',
-  'Contabilista',
-  'Segurança Social',
-  'Seguro',
-  'Material',
-  'Outro'
+const ui = {
+  expanded: new Set(),         // sids expandidos
+  section: {},                 // sid -> 'perfil' | 'aulas' | 'pagamentos'
+  editingPerfil: new Set(),    // sids em modo edição do perfil
+  editingAula: new Set(),      // chaves "sid:idx" em modo edição
+  editingPag: new Set(),       // chaves "sid:idx" em modo edição
+  editingExpense: new Set(),   // ids de despesas em modo edição
+  filter: 'ativos'
+};
+
+const EXPENSE_CATEGORIES = ['Aluguel','Luz','Contabilista','Segurança Social','Seguro','Material','Outro'];
+const TIPOS_AULA = [
+  { v: 'regular',    label: 'Regular',    descontaSaldo: true },
+  { v: 'reposicao',  label: 'Reposição',  descontaSaldo: true },
+  { v: 'trial',      label: 'Trial',      descontaSaldo: false },
+  { v: 'avulsa',     label: 'Avulsa',     descontaSaldo: false }
 ];
+function tipoDescontaSaldo(tipo) {
+  const t = TIPOS_AULA.find(x => x.v === tipo);
+  return t ? t.descontaSaldo : true;
+}
+function tipoLabel(tipo) {
+  const t = TIPOS_AULA.find(x => x.v === tipo);
+  return t ? t.label : 'Regular';
+}
 
-const STORAGE_KEY = 'gerenciamento-alunos-v1';
-const CONFIG_KEY = 'gerenciamento-alunos-config-v1';
+const STORAGE_KEY = 'gerenciamento-alunos-v2';
+const CONFIG_KEY = 'gerenciamento-alunos-config-v2';
+const STORAGE_KEY_OLD = 'gerenciamento-alunos-v1';
+const CONFIG_KEY_OLD = 'gerenciamento-alunos-config-v1';
 
-// ---------- Utilitários ----------
+// ---------- Util ----------
 function uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     const r = Math.random() * 16 | 0;
@@ -574,477 +454,654 @@ function uuid() {
     return v.toString(16);
   });
 }
-
-function todayStr() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function currentMonth() {
-  return new Date().toISOString().slice(0, 7);
-}
+function todayStr() { return new Date().toISOString().slice(0, 10); }
+function currentMonth() { return new Date().toISOString().slice(0, 7); }
 
 function formatMoney(v) {
   const n = Number(v) || 0;
   const formatted = Math.abs(n).toFixed(2).replace('.', ',');
   return (n < 0 ? '-' : '') + formatted + ' €';
 }
-
-function dateToMonth(dateStr) {
-  if (!dateStr) return '';
-  return dateStr.slice(0, 7);
+function dateToMonth(d) { return d ? d.slice(0,7) : ''; }
+function formatDate(d) {
+  if (!d) return '';
+  const [y,m,day] = d.split('-');
+  return `${day}/${m}/${y}`;
 }
-
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const [y, m, d] = dateStr.split('-');
-  return `${d}/${m}/${y}`;
-}
-
-function formatMonthLabel(monthStr) {
-  if (!monthStr) return '';
-  const [y, m] = monthStr.split('-');
+function formatMonthLabel(m) {
+  if (!m) return '';
+  const [y, mm] = m.split('-');
   const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-  return `${months[parseInt(m)-1]} de ${y}`;
+  return `${months[parseInt(mm)-1]} de ${y}`;
+}
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+function sortByDateDesc(arr, dateField) {
+  return [...arr].sort((a, b) => (b[dateField] || '').localeCompare(a[dateField] || ''));
 }
 
 // ---------- Persistência local ----------
 function saveLocal() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    students: state.students,
-    expenses: state.expenses
+    students: state.students, expenses: state.expenses
   }));
   localStorage.setItem(CONFIG_KEY, JSON.stringify(state.config));
 }
-
 function loadLocal() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    let raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY_OLD);
     if (raw) {
       const data = JSON.parse(raw);
       state.students = data.students || [];
       state.expenses = data.expenses || [];
     }
-    const cfgRaw = localStorage.getItem(CONFIG_KEY);
-    if (cfgRaw) {
-      state.config = { ...state.config, ...JSON.parse(cfgRaw) };
-    }
-  } catch (e) {
-    console.error('Erro ao carregar dados locais:', e);
-  }
+    const cfgRaw = localStorage.getItem(CONFIG_KEY) || localStorage.getItem(CONFIG_KEY_OLD);
+    if (cfgRaw) state.config = { ...state.config, ...JSON.parse(cfgRaw) };
+  } catch (e) { console.error('loadLocal:', e); }
+  migrate();
+}
+// Migração: garante campos novos em dados antigos
+function migrate() {
+  state.students.forEach(s => {
+    if (!s.status) s.status = 'ativo';
+    s.aulas = s.aulas || [];
+    s.aulas.forEach(a => { if (!a.tipo) a.tipo = 'regular'; });
+    s.pagamentos = s.pagamentos || [];
+    s.pagamentos.forEach(p => { if (p.numeroRecibo === undefined) p.numeroRecibo = ''; });
+  });
 }
 
-// ---------- Cálculos de aulas ----------
-function studentStats(student) {
-  const pagamentos = student.pagamentos || [];
-  const aulas = student.aulas || [];
+// ---------- Cálculos ----------
+function studentStats(s) {
+  const pagamentos = s.pagamentos || [];
+  const aulas = s.aulas || [];
   const mesesPagos = pagamentos.length;
   const aulasEntitled = mesesPagos * 8;
-  const aulasFeitas = aulas.length;
-  const saldo = aulasEntitled - aulasFeitas;
-  return { mesesPagos, aulasEntitled, aulasFeitas, saldo };
+  const aulasContam = aulas.filter(a => tipoDescontaSaldo(a.tipo)).length;
+  const aulasExtras = aulas.length - aulasContam;
+  const saldo = aulasEntitled - aulasContam;
+  return { mesesPagos, aulasEntitled, aulasContam, aulasExtras, saldo, totalAulas: aulas.length };
 }
-
-function classesInMonth(student, monthStr) {
-  return (student.aulas || []).filter(a => dateToMonth(a.data) === monthStr).length;
+function classesInMonth(s, monthStr, onlyDescontam = false) {
+  return (s.aulas || []).filter(a => {
+    if (dateToMonth(a.data) !== monthStr) return false;
+    if (onlyDescontam) return tipoDescontaSaldo(a.tipo);
+    return true;
+  });
 }
-
-function paymentInMonth(student, monthStr) {
-  return (student.pagamentos || []).find(p => p.mes === monthStr);
+function paymentInMonth(s, monthStr) {
+  return (s.pagamentos || []).find(p => p.mes === monthStr);
 }
 
 // ================================================================
-// RENDERIZAÇÃO — PADRÃO ANTI-BUG DE CURSOR
+// LISTENERS GLOBAIS — anti-cursor-bug
+// Ordem: aula → pagamento → aluno → despesa
 // ================================================================
-// Regra: uma vez que um input/select é criado e recebe foco, NUNCA
-// o recriamos enquanto o usuário digita. Em vez disso:
-//  - O input tem data-attributes que o ligam ao objeto no state
-//  - Um único listener global em 'input' atualiza o state sem tocar no DOM
-//  - Só re-renderizamos quando uma linha é adicionada/removida
-//  - Estatísticas derivadas são atualizadas em blocos separados
-// ================================================================
-
-// ---------- Listener global de inputs (core anti-cursor-bug) ----------
-// IMPORTANTE: checa do mais específico para o mais genérico.
-// Inputs de aula/pagamento também têm data-sid e data-field, então
-// precisam ser verificados ANTES do check genérico de campo do aluno.
 document.addEventListener('input', (e) => {
   const t = e.target;
-  if (!(t.matches('input, select, textarea'))) return;
+  if (!t.matches('input, select, textarea')) return;
 
-  // 1. Campos de AULA (mais específico primeiro)
   if (t.dataset.sid && t.dataset.aulaIdx !== undefined) {
-    const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s || !s.aulas) return;
+    const s = state.students.find(x => x.id === t.dataset.sid); if (!s) return;
     const idx = Number(t.dataset.aulaIdx);
     if (!s.aulas[idx]) return;
     s.aulas[idx][t.dataset.field] = t.value;
-    scheduleSave();
-    updateStudentStats(s.id);
-    return;
+    scheduleSave(); updateStudentStats(s.id); return;
   }
-
-  // 2. Campos de PAGAMENTO
   if (t.dataset.sid && t.dataset.pagIdx !== undefined) {
-    const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s || !s.pagamentos) return;
+    const s = state.students.find(x => x.id === t.dataset.sid); if (!s) return;
     const idx = Number(t.dataset.pagIdx);
     if (!s.pagamentos[idx]) return;
-    const field = t.dataset.field;
-    if (field === 'valor') {
-      s.pagamentos[idx][field] = t.value === '' ? '' : Number(t.value);
-    } else {
-      s.pagamentos[idx][field] = t.value;
-    }
-    if (field === 'data') s.pagamentos[idx].mes = dateToMonth(t.value);
-    scheduleSave();
-    updateStudentStats(s.id);
-    return;
+    const f = t.dataset.field;
+    if (f === 'valor') s.pagamentos[idx][f] = t.value === '' ? '' : Number(t.value);
+    else s.pagamentos[idx][f] = t.value;
+    if (f === 'data') s.pagamentos[idx].mes = dateToMonth(t.value);
+    scheduleSave(); updateStudentStats(s.id); return;
   }
-
-  // 3. Campos diretos do ALUNO (só se não for aula nem pagamento)
   if (t.dataset.sid && t.dataset.field) {
-    const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s) return;
-    if (t.type === 'number') {
-      s[t.dataset.field] = t.value === '' ? '' : Number(t.value);
-    } else {
-      s[t.dataset.field] = t.value;
-    }
-    scheduleSave();
-    updateStudentStats(s.id);
-    return;
+    const s = state.students.find(x => x.id === t.dataset.sid); if (!s) return;
+    if (t.type === 'number') s[t.dataset.field] = t.value === '' ? '' : Number(t.value);
+    else s[t.dataset.field] = t.value;
+    scheduleSave(); updateStudentStats(s.id); return;
   }
-
-  // 4. Campos de DESPESA
   if (t.dataset.eid && t.dataset.field) {
-    const exp = state.expenses.find(x => x.id === t.dataset.eid);
-    if (!exp) return;
-    if (t.dataset.field === 'valor') {
-      exp.valor = t.value === '' ? '' : Number(t.value);
-    } else {
+    const exp = state.expenses.find(x => x.id === t.dataset.eid); if (!exp) return;
+    if (t.dataset.field === 'valor') exp.valor = t.value === '' ? '' : Number(t.value);
+    else {
       exp[t.dataset.field] = t.value;
       if (t.dataset.field === 'data') exp.mes = dateToMonth(t.value);
     }
-    scheduleSave();
-    updateExpenseTotal();
-    return;
+    scheduleSave(); updateExpenseTotal(); return;
   }
 });
 
-// ---------- Listener global de change (para checkboxes) ----------
 document.addEventListener('change', (e) => {
   const t = e.target;
   if (t.type !== 'checkbox') return;
-
   if (t.dataset.pagIdx !== undefined && t.dataset.sid) {
-    const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s) return;
+    const s = state.students.find(x => x.id === t.dataset.sid); if (!s) return;
     const idx = Number(t.dataset.pagIdx);
     s.pagamentos[idx].reciboEmitido = t.checked;
     scheduleSave();
   }
 });
 
-// ---------- Save agendado (debounce) ----------
+// ---------- Save (debounce + Drive) ----------
 let saveTimer = null;
 function scheduleSave() {
   saveLocal();
   if (saveTimer) clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => {
-    syncToDrive().catch(err => console.warn('Drive sync failed:', err));
-  }, 2000);
+  saveTimer = setTimeout(() => syncToDrive().catch(err => console.warn('drive:', err)), 2000);
 }
-
-// ---------- Save imediato com feedback visual (botão Salvar) ----------
-function confirmSaveBtn(btn) {
-  // Garante que qualquer edição pendente já foi para o state (event 'input' já disparou)
+function saveNow() {
   saveLocal();
-  // Cancela o debounce e envia para o Drive agora
   if (saveTimer) clearTimeout(saveTimer);
-  syncToDrive().catch(err => console.warn('Drive sync failed:', err));
-
-  const originalText = btn.textContent;
-  const originalDisabled = btn.disabled;
-  btn.textContent = '✓ Salvo';
-  btn.classList.add('saved-flash');
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = originalText;
-    btn.classList.remove('saved-flash');
-    btn.disabled = originalDisabled;
-  }, 1500);
+  return syncToDrive().catch(err => console.warn('drive:', err));
 }
 
 // ================================================================
-// TAB: ALUNOS
+// TAB ALUNOS
 // ================================================================
 function renderStudents() {
   const container = document.getElementById('students-container');
-  const search = document.getElementById('student-search').value.toLowerCase().trim();
+  const search = (document.getElementById('student-search').value || '').toLowerCase().trim();
+  const month = currentMonth();
 
-  const filtered = state.students.filter(s =>
-    !search || (s.nome || '').toLowerCase().includes(search)
-  );
+  let list = state.students.filter(s => !search || (s.nome || '').toLowerCase().includes(search));
 
-  document.getElementById('student-count').textContent = `${state.students.length} aluno${state.students.length === 1 ? '' : 's'}`;
-
-  if (filtered.length === 0) {
-    container.innerHTML = '<div class="empty-state">Nenhum aluno cadastrado. Clique em "+ Novo Aluno" para começar.</div>';
-    return;
+  // Filtros
+  switch (ui.filter) {
+    case 'ativos':
+      list = list.filter(s => s.status !== 'drop-out'); break;
+    case 'dropout':
+      list = list.filter(s => s.status === 'drop-out'); break;
+    case 'nao-pagou':
+      list = list.filter(s => s.status !== 'drop-out' && !paymentInMonth(s, month)); break;
+    case 'recibo-pendente':
+      list = list.filter(s => {
+        const p = paymentInMonth(s, month);
+        return p && !p.reciboEmitido;
+      });
+      break;
+    case 'todos': default: break;
   }
 
-  container.innerHTML = filtered.map(s => renderStudentCard(s)).join('');
+  document.getElementById('student-count').textContent =
+    `${list.length} de ${state.students.length} aluno${state.students.length === 1 ? '' : 's'}`;
+
+  if (list.length === 0) {
+    container.innerHTML = `<div class="empty-state">Nenhum aluno ${search ? 'encontrado' : 'cadastrado'}.</div>`;
+    return;
+  }
+  // ordena: ativos primeiro, depois alfabético
+  list.sort((a,b) => {
+    if (a.status !== b.status) return a.status === 'drop-out' ? 1 : -1;
+    return (a.nome || '').localeCompare(b.nome || '', 'pt');
+  });
+  container.innerHTML = list.map(renderStudentCard).join('');
 }
 
 function renderStudentCard(s) {
-  const stats = studentStats(s);
-  const saldoClass = stats.saldo > 0 ? 'warn' : (stats.saldo < 0 ? 'negative' : 'positive');
+  const expanded = ui.expanded.has(s.id);
+  const section = ui.section[s.id] || 'perfil';
+  const isDropout = s.status === 'drop-out';
+  const month = currentMonth();
+  const pagAtual = paymentInMonth(s, month);
+
+  const badges = [];
+  if (isDropout) badges.push('<span class="badge dropout">Drop Out</span>');
+  if (!isDropout && !pagAtual) badges.push('<span class="badge danger">Não pagou</span>');
+  if (pagAtual && !pagAtual.reciboEmitido) badges.push('<span class="badge warn">Recibo pendente</span>');
+  if (pagAtual && pagAtual.reciboEmitido) badges.push('<span class="badge success">Em dia</span>');
 
   return `
-    <div class="card student-card" data-sid="${s.id}">
-      <div class="header-row">
-        <input type="text" data-sid="${s.id}" data-field="nome" value="${escapeHtml(s.nome || '')}"
-               placeholder="Nome do aluno" style="font-weight:600;font-size:16px" />
-        <input type="tel" data-sid="${s.id}" data-field="contato" value="${escapeHtml(s.contato || '')}" placeholder="Contato" />
-        <input type="email" data-sid="${s.id}" data-field="email" value="${escapeHtml(s.email || '')}" placeholder="Email" />
-        <button class="expand-toggle" onclick="toggleStudent('${s.id}')">▼ Detalhes</button>
-        <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="deleteStudent('${s.id}')">🗑</button>
-      </div>
-
-      <div class="fields-grid">
-        <div class="field">
-          <label>Endereço</label>
-          <input type="text" data-sid="${s.id}" data-field="endereco" value="${escapeHtml(s.endereco || '')}" />
+    <div class="card student-card ${expanded ? 'expanded' : ''} ${isDropout ? 'dropout' : ''}" data-sid="${s.id}">
+      <div class="student-row">
+        <span class="name">${escapeHtml(s.nome || 'Sem nome')}</span>
+        <div class="badges">${badges.join('')}</div>
+        <div class="actions">
+          <button class="btn secondary small" onclick="toggleExpand('${s.id}')">${expanded ? '▲ Detalhes' : '▼ Detalhes'}</button>
+          ${isDropout
+            ? `<button class="btn success small" onclick="setStatus('${s.id}', 'ativo')">Reativar</button>`
+            : `<button class="btn warning small" onclick="setStatus('${s.id}', 'drop-out')">Drop Out</button>`}
+          <button class="btn danger small" onclick="deleteStudent('${s.id}')">🗑</button>
         </div>
-        <div class="field">
-          <label>Contribuinte (NIF)</label>
-          <input type="text" data-sid="${s.id}" data-field="contribuinte" value="${escapeHtml(s.contribuinte || '')}" />
-        </div>
-        <div class="field">
-          <label>Data de nascimento</label>
-          <input type="date" data-sid="${s.id}" data-field="dataNascimento" value="${s.dataNascimento || ''}" />
-        </div>
-        <div class="field">
-          <label>Início do curso</label>
-          <input type="date" data-sid="${s.id}" data-field="dataInicioCurso" value="${s.dataInicioCurso || ''}" />
-        </div>
-        <div class="field">
-          <label>Mensalidade (€)</label>
-          <input type="number" step="0.01" data-sid="${s.id}" data-field="mensalidade" value="${s.mensalidade ?? ''}" />
-        </div>
-      </div>
-
-      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
-        <button class="btn success" onclick="confirmSaveBtn(this)">💾 Salvar dados do aluno</button>
-      </div>
-
-      <div class="stats" id="stats-${s.id}">
-        ${renderStudentStatsHtml(stats)}
       </div>
 
       <div class="student-details">
-        <div class="sub-section">
-          <h4>Aulas — ${s.aulas?.length || 0} registrada(s)</h4>
-          <table>
-            <thead>
-              <tr><th style="width:160px">Data</th><th>Matéria</th><th class="actions"></th></tr>
-            </thead>
-            <tbody id="aulas-tbody-${s.id}">
-              ${renderAulasRows(s)}
-            </tbody>
-          </table>
-          <button class="btn secondary" style="margin-top:8px" onclick="addAula('${s.id}')">+ Adicionar aula</button>
+        <div class="sub-tabs">
+          <button class="${section==='perfil'?'active':''}" onclick="setSection('${s.id}','perfil')">👤 Perfil</button>
+          <button class="${section==='aulas'?'active':''}" onclick="setSection('${s.id}','aulas')">📚 Detalhes das aulas</button>
+          <button class="${section==='pagamentos'?'active':''}" onclick="setSection('${s.id}','pagamentos')">💰 Pagamentos</button>
         </div>
 
-        <div class="sub-section">
-          <h4>Pagamentos</h4>
-          <table>
-            <thead>
-              <tr>
-                <th style="width:160px">Data de pagamento</th>
-                <th style="width:120px">Mês referência</th>
-                <th style="width:120px">Valor (€)</th>
-                <th style="width:120px">Recibo emitido</th>
-                <th class="actions"></th>
-              </tr>
-            </thead>
-            <tbody id="pag-tbody-${s.id}">
-              ${renderPagamentosRows(s)}
-            </tbody>
-          </table>
-          <button class="btn secondary" style="margin-top:8px" onclick="addPagamento('${s.id}')">+ Registrar pagamento</button>
+        <div class="sub-section ${section==='perfil'?'active':''}" id="sec-perfil-${s.id}">
+          ${renderPerfil(s)}
+        </div>
+        <div class="sub-section ${section==='aulas'?'active':''}" id="sec-aulas-${s.id}">
+          ${renderAulasSection(s)}
+        </div>
+        <div class="sub-section ${section==='pagamentos'?'active':''}" id="sec-pagamentos-${s.id}">
+          ${renderPagamentosSection(s)}
         </div>
 
-        <div class="sub-section">
-          <button class="btn secondary" onclick="showHistory('${s.id}')">📜 Ver histórico completo</button>
-        </div>
+        <div class="stats" id="stats-${s.id}">${renderStats(s)}</div>
       </div>
     </div>
   `;
 }
 
-function renderStudentStatsHtml(stats) {
-  const saldoClass = stats.saldo > 0 ? 'warn' : (stats.saldo < 0 ? 'negative' : 'positive');
-  const saldoLabel = stats.saldo > 0 ? 'aulas por fazer' : (stats.saldo < 0 ? 'aulas em excesso' : 'em dia');
+// ---------- Perfil (locked vs editing) ----------
+function renderPerfil(s) {
+  const editing = ui.editingPerfil.has(s.id);
+  if (editing) return renderPerfilEdit(s);
+  return renderPerfilLocked(s);
+}
+function renderPerfilLocked(s) {
+  const fields = [
+    ['Endereço', s.endereco],
+    ['Contato', s.contato],
+    ['Email', s.email],
+    ['Contribuinte (NIF)', s.contribuinte],
+    ['Data de nascimento', formatDate(s.dataNascimento)],
+    ['Início do curso', formatDate(s.dataInicioCurso)],
+    ['Mensalidade', s.mensalidade !== '' && s.mensalidade != null ? formatMoney(s.mensalidade) : '']
+  ];
   return `
-    <div class="stat"><span class="label">Meses pagos</span><span class="value">${stats.mesesPagos}</span></div>
-    <div class="stat"><span class="label">Direito (8/mês)</span><span class="value">${stats.aulasEntitled}</span></div>
-    <div class="stat"><span class="label">Aulas feitas</span><span class="value">${stats.aulasFeitas}</span></div>
-    <div class="stat ${saldoClass}"><span class="label">Saldo</span><span class="value">${stats.saldo}</span></div>
-    <div class="stat"><span class="label">Status</span><span class="value" style="font-size:13px">${saldoLabel}</span></div>
+    ${fields.map(([l,v]) => `
+      <div class="field-row">
+        <span class="label">${l}</span>
+        <span class="value ${!v ? 'empty' : ''}">${v ? escapeHtml(v) : '— vazio —'}</span>
+      </div>
+    `).join('')}
+    <div class="perfil-actions">
+      <button class="btn secondary" onclick="showHistory('${s.id}')">📜 Ver histórico</button>
+      <button class="btn" onclick="editPerfil('${s.id}')">✏️ Editar dados</button>
+    </div>
+  `;
+}
+function renderPerfilEdit(s) {
+  return `
+    <div class="field-row"><span class="label">Nome</span>
+      <input type="text" data-sid="${s.id}" data-field="nome" value="${escapeHtml(s.nome || '')}" /></div>
+    <div class="field-row"><span class="label">Endereço</span>
+      <input type="text" data-sid="${s.id}" data-field="endereco" value="${escapeHtml(s.endereco || '')}" /></div>
+    <div class="field-row"><span class="label">Contato</span>
+      <input type="tel" data-sid="${s.id}" data-field="contato" value="${escapeHtml(s.contato || '')}" /></div>
+    <div class="field-row"><span class="label">Email</span>
+      <input type="email" data-sid="${s.id}" data-field="email" value="${escapeHtml(s.email || '')}" /></div>
+    <div class="field-row"><span class="label">Contribuinte (NIF)</span>
+      <input type="text" data-sid="${s.id}" data-field="contribuinte" value="${escapeHtml(s.contribuinte || '')}" /></div>
+    <div class="field-row"><span class="label">Data de nascimento</span>
+      <input type="date" data-sid="${s.id}" data-field="dataNascimento" value="${s.dataNascimento || ''}" /></div>
+    <div class="field-row"><span class="label">Início do curso</span>
+      <input type="date" data-sid="${s.id}" data-field="dataInicioCurso" value="${s.dataInicioCurso || ''}" /></div>
+    <div class="field-row"><span class="label">Mensalidade (€)</span>
+      <input type="number" step="0.01" data-sid="${s.id}" data-field="mensalidade" value="${s.mensalidade ?? ''}" /></div>
+    <div class="perfil-actions">
+      <button class="btn secondary" onclick="cancelPerfil('${s.id}')">Cancelar</button>
+      <button class="btn success" onclick="savePerfil('${s.id}')">💾 Salvar</button>
+    </div>
   `;
 }
 
+// ---------- Aulas ----------
+function renderAulasSection(s) {
+  return `
+    <div style="margin-bottom:8px">
+      <button class="btn" onclick="addAula('${s.id}')">+ Nova aula</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:130px">Data</th>
+          <th>Matéria</th>
+          <th style="width:130px">Tipo</th>
+          <th style="width:200px"></th>
+        </tr>
+      </thead>
+      <tbody id="aulas-tbody-${s.id}">${renderAulasRows(s)}</tbody>
+    </table>
+  `;
+}
 function renderAulasRows(s) {
   if (!s.aulas || s.aulas.length === 0) {
-    return '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:16px">Nenhuma aula registrada ainda.</td></tr>';
+    return `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:16px">Nenhuma aula registrada.</td></tr>`;
   }
-  // Ordena por data desc
-  const sorted = [...s.aulas].map((a, i) => ({ a, i })).sort((x, y) => (y.a.data || '').localeCompare(x.a.data || ''));
-  return sorted.map(({ a, i }) => `
+  // Ordena por data desc, mantendo índice original
+  const indexed = s.aulas.map((a, i) => ({ a, i }));
+  indexed.sort((x, y) => (y.a.data || '').localeCompare(x.a.data || ''));
+  return indexed.map(({ a, i }) => {
+    const editing = ui.editingAula.has(`${s.id}:${i}`);
+    return editing ? renderAulaEditRow(s, a, i) : renderAulaLockedRow(s, a, i);
+  }).join('');
+}
+function renderAulaLockedRow(s, a, i) {
+  const tipo = a.tipo || 'regular';
+  const desconta = tipoDescontaSaldo(tipo);
+  return `
     <tr>
-      <td><input type="date" data-sid="${s.id}" data-aula-idx="${i}" data-field="data" value="${a.data || ''}" /></td>
-      <td><input type="text" data-sid="${s.id}" data-aula-idx="${i}" data-field="materia" value="${escapeHtml(a.materia || '')}" placeholder="Ex.: Present Perfect" /></td>
-      <td class="actions">
+      <td>${formatDate(a.data) || '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${escapeHtml(a.materia || '<span style="color:var(--muted)">—</span>')}</td>
+      <td>
+        <span class="badge ${desconta ? 'info' : ''}">${tipoLabel(tipo)}</span>
+      </td>
+      <td class="actions-cell">
         <div class="btn-group">
-          <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
-          <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removeAula('${s.id}', ${i})">Excluir</button>
+          <button class="btn secondary small" onclick="editAula('${s.id}',${i})">✏️ Editar</button>
+          <button class="btn danger small" onclick="removeAula('${s.id}',${i})">Excluir</button>
         </div>
       </td>
     </tr>
-  `).join('');
+  `;
+}
+function renderAulaEditRow(s, a, i) {
+  return `
+    <tr class="editing">
+      <td><input type="date" data-sid="${s.id}" data-aula-idx="${i}" data-field="data" value="${a.data || ''}" /></td>
+      <td><input type="text" data-sid="${s.id}" data-aula-idx="${i}" data-field="materia" value="${escapeHtml(a.materia || '')}" placeholder="Ex.: Present Perfect" /></td>
+      <td>
+        <select data-sid="${s.id}" data-aula-idx="${i}" data-field="tipo">
+          ${TIPOS_AULA.map(t => `<option value="${t.v}" ${a.tipo===t.v?'selected':''}>${t.label}${t.descontaSaldo?'':' *'}</option>`).join('')}
+        </select>
+      </td>
+      <td class="actions-cell">
+        <div class="btn-group">
+          <button class="btn success small" onclick="saveAula('${s.id}',${i})">💾 Salvar</button>
+          <button class="btn danger small" onclick="removeAula('${s.id}',${i})">Excluir</button>
+        </div>
+      </td>
+    </tr>
+  `;
 }
 
+// ---------- Pagamentos ----------
+function renderPagamentosSection(s) {
+  return `
+    <div style="margin-bottom:8px">
+      <button class="btn" onclick="addPagamento('${s.id}')">+ Registrar pagamento</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:130px">Data</th>
+          <th style="width:130px">Mês ref.</th>
+          <th style="width:110px">Valor (€)</th>
+          <th style="width:140px">Nº recibo</th>
+          <th style="width:110px">Recibo emitido</th>
+          <th style="width:200px"></th>
+        </tr>
+      </thead>
+      <tbody id="pag-tbody-${s.id}">${renderPagamentosRows(s)}</tbody>
+    </table>
+  `;
+}
 function renderPagamentosRows(s) {
   if (!s.pagamentos || s.pagamentos.length === 0) {
-    return '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:16px">Nenhum pagamento registrado.</td></tr>';
+    return `<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px">Nenhum pagamento.</td></tr>`;
   }
-  const sorted = [...s.pagamentos].map((p, i) => ({ p, i })).sort((x, y) => (y.p.data || '').localeCompare(x.p.data || ''));
-  return sorted.map(({ p, i }) => `
+  const indexed = s.pagamentos.map((p, i) => ({ p, i }));
+  indexed.sort((x, y) => (y.p.data || '').localeCompare(x.p.data || ''));
+  return indexed.map(({ p, i }) => {
+    const editing = ui.editingPag.has(`${s.id}:${i}`);
+    return editing ? renderPagEditRow(s, p, i) : renderPagLockedRow(s, p, i);
+  }).join('');
+}
+function renderPagLockedRow(s, p, i) {
+  return `
     <tr>
+      <td>${formatDate(p.data) || '—'}</td>
+      <td>${formatMonthLabel(p.mes) || '—'}</td>
+      <td>${formatMoney(p.valor)}</td>
+      <td>${escapeHtml(p.numeroRecibo || '<span style="color:var(--muted)">—</span>')}</td>
+      <td>${p.reciboEmitido ? '<span class="badge success">✓ Sim</span>' : '<span class="badge warn">Não</span>'}</td>
+      <td class="actions-cell">
+        <div class="btn-group">
+          <button class="btn secondary small" onclick="editPagamento('${s.id}',${i})">✏️ Editar</button>
+          <button class="btn danger small" onclick="removePagamento('${s.id}',${i})">Excluir</button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+function renderPagEditRow(s, p, i) {
+  return `
+    <tr class="editing">
       <td><input type="date" data-sid="${s.id}" data-pag-idx="${i}" data-field="data" value="${p.data || ''}" /></td>
       <td><input type="month" data-sid="${s.id}" data-pag-idx="${i}" data-field="mes" value="${p.mes || ''}" /></td>
       <td><input type="number" step="0.01" data-sid="${s.id}" data-pag-idx="${i}" data-field="valor" value="${p.valor ?? ''}" /></td>
+      <td><input type="text" data-sid="${s.id}" data-pag-idx="${i}" data-field="numeroRecibo" value="${escapeHtml(p.numeroRecibo || '')}" placeholder="Ex.: 2026/0042" /></td>
       <td>
-        <label class="checkbox-field">
+        <label style="display:flex;align-items:center;gap:6px;font-size:13px">
           <input type="checkbox" data-sid="${s.id}" data-pag-idx="${i}" data-field="reciboEmitido" ${p.reciboEmitido ? 'checked' : ''} />
           <span>Emitido</span>
         </label>
       </td>
-      <td class="actions">
+      <td class="actions-cell">
         <div class="btn-group">
-          <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
-          <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removePagamento('${s.id}', ${i})">Excluir</button>
+          <button class="btn success small" onclick="savePagamento('${s.id}',${i})">💾 Salvar</button>
+          <button class="btn danger small" onclick="removePagamento('${s.id}',${i})">Excluir</button>
         </div>
       </td>
     </tr>
-  `).join('');
+  `;
 }
 
+// ---------- Stats ----------
+function renderStats(s) {
+  const st = studentStats(s);
+  const saldoClass = st.saldo > 0 ? 'warn' : (st.saldo < 0 ? 'negative' : 'positive');
+  const saldoLabel = st.saldo > 0 ? 'aulas por fazer' : (st.saldo < 0 ? 'aulas em excesso' : 'em dia');
+  return `
+    <div class="stat"><span class="label">Meses pagos</span><span class="value">${st.mesesPagos}</span></div>
+    <div class="stat"><span class="label">Direito (8/mês)</span><span class="value">${st.aulasEntitled}</span></div>
+    <div class="stat"><span class="label">Aulas regulares</span><span class="value">${st.aulasContam}</span></div>
+    <div class="stat"><span class="label">Trial / Avulsa</span><span class="value">${st.aulasExtras}</span></div>
+    <div class="stat ${saldoClass}"><span class="label">Saldo</span><span class="value">${st.saldo}</span></div>
+    <div class="stat"><span class="label">Status</span><span class="value" style="font-size:13px">${saldoLabel}</span></div>
+  `;
+}
 function updateStudentStats(sid) {
   const s = state.students.find(x => x.id === sid);
   if (!s) return;
   const el = document.getElementById(`stats-${sid}`);
-  if (el) el.innerHTML = renderStudentStatsHtml(studentStats(s));
+  if (el) el.innerHTML = renderStats(s);
 }
 
-function toggleStudent(sid) {
+// ================================================================
+// AÇÕES — alunos
+// ================================================================
+function toggleExpand(sid) {
+  if (ui.expanded.has(sid)) ui.expanded.delete(sid);
+  else ui.expanded.add(sid);
+  if (!ui.section[sid]) ui.section[sid] = 'perfil';
+  renderStudents();
+}
+function setSection(sid, sec) {
+  ui.section[sid] = sec;
+  // re-renderiza apenas o card desse aluno
   const card = document.querySelector(`.student-card[data-sid="${sid}"]`);
-  if (card) card.classList.toggle('expanded');
+  if (card) {
+    const s = state.students.find(x => x.id === sid);
+    card.outerHTML = renderStudentCard(s);
+  }
 }
-
+function setStatus(sid, status) {
+  const s = state.students.find(x => x.id === sid);
+  if (!s) return;
+  if (status === 'drop-out' && !confirm(`Marcar "${s.nome || 'Sem nome'}" como Drop Out? O aluno some da lista de Ativos mas o histórico fica preservado.`)) return;
+  s.status = status;
+  scheduleSave();
+  renderStudents();
+}
 function addStudent() {
   const s = {
-    id: uuid(),
-    nome: '',
-    endereco: '',
-    contato: '',
-    contribuinte: '',
-    email: '',
-    dataNascimento: '',
-    dataInicioCurso: todayStr(),
-    mensalidade: '',
-    aulas: [],
-    pagamentos: []
+    id: uuid(), nome: '', endereco: '', contato: '', contribuinte: '', email: '',
+    dataNascimento: '', dataInicioCurso: todayStr(), mensalidade: '',
+    status: 'ativo', aulas: [], pagamentos: []
   };
   state.students.push(s);
+  ui.expanded.add(s.id);
+  ui.section[s.id] = 'perfil';
+  ui.editingPerfil.add(s.id);
   scheduleSave();
   renderStudents();
-  // Expande o recém-criado e foca no nome
   setTimeout(() => {
-    const card = document.querySelector(`.student-card[data-sid="${s.id}"]`);
-    if (card) {
-      card.classList.add('expanded');
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      const input = card.querySelector('input[data-field="nome"]');
-      if (input) input.focus();
-    }
+    const inp = document.querySelector(`.student-card[data-sid="${s.id}"] input[data-field="nome"]`);
+    if (inp) { inp.focus(); inp.scrollIntoView({behavior:'smooth', block:'center'}); }
   }, 50);
 }
-
 function deleteStudent(sid) {
-  const s = state.students.find(x => x.id === sid);
-  if (!s) return;
-  if (!confirm(`Apagar o aluno "${s.nome || 'sem nome'}" e todo o seu histórico?`)) return;
+  const s = state.students.find(x => x.id === sid); if (!s) return;
+  if (!confirm(`Apagar "${s.nome || 'sem nome'}" e TODO o histórico (aulas, pagamentos, recibos)?\n\nEssa ação não pode ser desfeita.\n\nDica: para preservar o histórico, marque como "Drop Out" em vez de apagar.`)) return;
   state.students = state.students.filter(x => x.id !== sid);
+  ui.expanded.delete(sid);
   scheduleSave();
   renderStudents();
 }
 
+function editPerfil(sid) {
+  ui.editingPerfil.add(sid);
+  rerenderSection(sid, 'perfil');
+}
+function savePerfil(sid) {
+  ui.editingPerfil.delete(sid);
+  saveNow();
+  rerenderSection(sid, 'perfil');
+  renderStudents(); // atualiza nome no header da lista
+}
+function cancelPerfil(sid) {
+  ui.editingPerfil.delete(sid);
+  rerenderSection(sid, 'perfil');
+}
+function rerenderSection(sid, sec) {
+  const el = document.getElementById(`sec-${sec}-${sid}`);
+  if (!el) return;
+  const s = state.students.find(x => x.id === sid);
+  if (sec === 'perfil') el.innerHTML = renderPerfil(s);
+  if (sec === 'aulas') el.innerHTML = renderAulasSection(s);
+  if (sec === 'pagamentos') el.innerHTML = renderPagamentosSection(s);
+  updateStudentStats(sid);
+}
+
+// ---------- Aulas ações ----------
 function addAula(sid) {
-  const s = state.students.find(x => x.id === sid);
-  if (!s) return;
+  const s = state.students.find(x => x.id === sid); if (!s) return;
   s.aulas = s.aulas || [];
-  s.aulas.push({ data: todayStr(), materia: '' });
+  s.aulas.push({ data: todayStr(), materia: '', tipo: 'regular' });
+  const newIdx = s.aulas.length - 1;
+  ui.editingAula.add(`${sid}:${newIdx}`);
   scheduleSave();
-  // Re-renderiza apenas as linhas de aulas (não mexe em outros inputs)
   document.getElementById(`aulas-tbody-${sid}`).innerHTML = renderAulasRows(s);
   updateStudentStats(sid);
-  // foca no novo input de matéria
-  const rows = document.querySelectorAll(`#aulas-tbody-${sid} input[data-field="materia"]`);
-  if (rows.length) rows[0].focus();
+  setTimeout(() => {
+    const inp = document.querySelector(`#aulas-tbody-${sid} tr.editing input[data-field="materia"]`);
+    if (inp) inp.focus();
+  }, 50);
 }
-
+function editAula(sid, idx) {
+  ui.editingAula.add(`${sid}:${idx}`);
+  const s = state.students.find(x => x.id === sid);
+  document.getElementById(`aulas-tbody-${sid}`).innerHTML = renderAulasRows(s);
+}
+function saveAula(sid, idx) {
+  ui.editingAula.delete(`${sid}:${idx}`);
+  saveNow();
+  const s = state.students.find(x => x.id === sid);
+  document.getElementById(`aulas-tbody-${sid}`).innerHTML = renderAulasRows(s);
+  updateStudentStats(sid);
+}
 function removeAula(sid, idx) {
-  const s = state.students.find(x => x.id === sid);
-  if (!s) return;
+  const s = state.students.find(x => x.id === sid); if (!s) return;
+  if (!confirm('Excluir esta aula?')) return;
   s.aulas.splice(idx, 1);
+  // Re-mapeia índices em ui.editingAula
+  ui.editingAula = new Set([...ui.editingAula]
+    .filter(k => k.startsWith(sid + ':'))
+    .map(k => {
+      const [, iStr] = k.split(':');
+      const i = Number(iStr);
+      if (i === idx) return null;
+      if (i > idx) return `${sid}:${i-1}`;
+      return k;
+    }).filter(Boolean));
   scheduleSave();
   document.getElementById(`aulas-tbody-${sid}`).innerHTML = renderAulasRows(s);
   updateStudentStats(sid);
 }
 
+// ---------- Pagamentos ações ----------
 function addPagamento(sid) {
-  const s = state.students.find(x => x.id === sid);
-  if (!s) return;
+  const s = state.students.find(x => x.id === sid); if (!s) return;
   s.pagamentos = s.pagamentos || [];
-  const today = todayStr();
-  s.pagamentos.push({
-    data: today,
-    mes: currentMonth(),
-    valor: s.mensalidade || '',
-    reciboEmitido: false
-  });
+  const targetMonth = currentMonth();
+  // Bloqueia duplicado
+  const existe = paymentInMonth(s, targetMonth);
+  if (existe) {
+    alert(`Já existe um pagamento registrado para ${formatMonthLabel(targetMonth)} (${formatDate(existe.data)}).\n\nSe quiser registrar para outro mês, edite a data depois de criar.`);
+    // Cria mas em outro mês? Vou criar sem mês, deixando ela preencher
+    s.pagamentos.push({ data: todayStr(), mes: '', valor: s.mensalidade || '', reciboEmitido: false, numeroRecibo: '' });
+  } else {
+    s.pagamentos.push({ data: todayStr(), mes: targetMonth, valor: s.mensalidade || '', reciboEmitido: false, numeroRecibo: '' });
+  }
+  const newIdx = s.pagamentos.length - 1;
+  ui.editingPag.add(`${sid}:${newIdx}`);
   scheduleSave();
   document.getElementById(`pag-tbody-${sid}`).innerHTML = renderPagamentosRows(s);
   updateStudentStats(sid);
 }
-
-function removePagamento(sid, idx) {
+function editPagamento(sid, idx) {
+  ui.editingPag.add(`${sid}:${idx}`);
+  const s = state.students.find(x => x.id === sid);
+  document.getElementById(`pag-tbody-${sid}`).innerHTML = renderPagamentosRows(s);
+}
+function savePagamento(sid, idx) {
   const s = state.students.find(x => x.id === sid);
   if (!s) return;
+  const p = s.pagamentos[idx];
+  if (!p.mes) {
+    alert('Preencha o mês de referência.');
+    return;
+  }
+  // Valida duplicado
+  const dup = s.pagamentos.find((x, i) => i !== idx && x.mes === p.mes);
+  if (dup) {
+    alert(`Já existe outro pagamento para ${formatMonthLabel(p.mes)}. Não é possível ter dois pagamentos no mesmo mês.\n\nApague o duplicado ou altere o mês de referência.`);
+    return;
+  }
+  ui.editingPag.delete(`${sid}:${idx}`);
+  saveNow();
+  document.getElementById(`pag-tbody-${sid}`).innerHTML = renderPagamentosRows(s);
+  updateStudentStats(sid);
+  renderStudents(); // atualiza badges de "não pagou" / "recibo pendente"
+}
+function removePagamento(sid, idx) {
+  const s = state.students.find(x => x.id === sid); if (!s) return;
+  if (!confirm('Excluir este pagamento? O direito de aulas correspondente será removido.')) return;
   s.pagamentos.splice(idx, 1);
+  ui.editingPag = new Set([...ui.editingPag]
+    .filter(k => k.startsWith(sid + ':'))
+    .map(k => {
+      const [, iStr] = k.split(':');
+      const i = Number(iStr);
+      if (i === idx) return null;
+      if (i > idx) return `${sid}:${i-1}`;
+      return k;
+    }).filter(Boolean));
   scheduleSave();
   document.getElementById(`pag-tbody-${sid}`).innerHTML = renderPagamentosRows(s);
   updateStudentStats(sid);
+  renderStudents();
 }
 
 // ================================================================
-// HISTÓRICO COMPLETO (MODAL)
+// HISTÓRICO
 // ================================================================
 function showHistory(sid) {
-  const s = state.students.find(x => x.id === sid);
-  if (!s) return;
+  const s = state.students.find(x => x.id === sid); if (!s) return;
   document.getElementById('history-title').textContent = `Histórico — ${s.nome || 'Sem nome'}`;
 
   const aulasByMonth = {};
@@ -1053,213 +1110,210 @@ function showHistory(sid) {
     if (!aulasByMonth[m]) aulasByMonth[m] = [];
     aulasByMonth[m].push(a);
   });
-
   const months = Object.keys(aulasByMonth).sort((a, b) => b.localeCompare(a));
 
-  let html = '';
+  let html = `<div class="stats" style="margin-bottom:16px">${renderStats(s)}</div>`;
   if (months.length === 0) {
-    html = '<p style="color:var(--muted)">Nenhuma aula registrada ainda.</p>';
+    html += '<p style="color:var(--muted)">Nenhuma aula registrada.</p>';
   } else {
     months.forEach(m => {
       const aulas = aulasByMonth[m].sort((a, b) => (a.data || '').localeCompare(b.data || ''));
       const pag = paymentInMonth(s, m);
-      html += `<div style="margin-bottom:20px">
-        <h3 style="margin-bottom:4px">${formatMonthLabel(m)} <span class="badge">${aulas.length} aula(s)</span>
-          ${pag ? `<span class="badge success">Pago em ${formatDate(pag.data)}</span>` : `<span class="badge warn">Sem pagamento</span>`}
+      const reg = aulas.filter(a => tipoDescontaSaldo(a.tipo)).length;
+      const ext = aulas.length - reg;
+      html += `<div style="margin-bottom:18px">
+        <h3 style="margin-bottom:6px">${formatMonthLabel(m)}
+          <span class="badge">${reg} regular${reg===1?'':'es'}</span>
+          ${ext>0 ? `<span class="badge info">${ext} extra(s)</span>` : ''}
+          ${pag ? `<span class="badge success">Pago em ${formatDate(pag.data)}${pag.numeroRecibo ? ` — recibo ${escapeHtml(pag.numeroRecibo)}` : ''}</span>`
+                : `<span class="badge warn">Sem pagamento</span>`}
         </h3>
         <table>
-          <thead><tr><th style="width:140px">Data</th><th>Matéria</th></tr></thead>
+          <thead><tr><th style="width:120px">Data</th><th>Matéria</th><th style="width:100px">Tipo</th></tr></thead>
           <tbody>
-            ${aulas.map(a => `<tr><td>${formatDate(a.data)}</td><td>${escapeHtml(a.materia || '—')}</td></tr>`).join('')}
+            ${aulas.map(a => `<tr>
+              <td>${formatDate(a.data)}</td>
+              <td>${escapeHtml(a.materia || '—')}</td>
+              <td><span class="badge">${tipoLabel(a.tipo)}</span></td>
+            </tr>`).join('')}
           </tbody>
         </table>
       </div>`;
     });
   }
-
-  const stats = studentStats(s);
-  html = `<div class="stats" style="margin-bottom:20px">
-    ${renderStudentStatsHtml(stats)}
-  </div>` + html;
-
   document.getElementById('history-content').innerHTML = html;
   document.getElementById('history-modal').classList.add('open');
 }
 
 // ================================================================
-// TAB: DESPESAS
+// TAB DESPESAS
 // ================================================================
 function renderExpenses() {
   const monthInput = document.getElementById('expense-month');
   if (!monthInput.value) monthInput.value = currentMonth();
   const month = monthInput.value;
-
   const tbody = document.getElementById('expenses-tbody');
   const emptyEl = document.getElementById('expenses-empty');
+  const list = state.expenses.filter(e => e.mes === month).sort((a, b) => (a.data || '').localeCompare(b.data || ''));
 
-  const list = state.expenses
-    .filter(e => e.mes === month)
-    .sort((a, b) => (a.data || '').localeCompare(b.data || ''));
-
-  if (list.length === 0) {
-    tbody.innerHTML = '';
-    emptyEl.style.display = 'block';
-  } else {
+  if (list.length === 0) { tbody.innerHTML = ''; emptyEl.style.display = 'block'; }
+  else {
     emptyEl.style.display = 'none';
-    tbody.innerHTML = list.map(e => `
-      <tr>
-        <td><input type="date" data-eid="${e.id}" data-field="data" value="${e.data || ''}" /></td>
-        <td>
-          <select data-eid="${e.id}" data-field="categoria">
-            ${EXPENSE_CATEGORIES.map(c => `<option value="${c}" ${e.categoria === c ? 'selected' : ''}>${c}</option>`).join('')}
-          </select>
-        </td>
-        <td><input type="text" data-eid="${e.id}" data-field="descricao" value="${escapeHtml(e.descricao || '')}" /></td>
-        <td><input type="number" step="0.01" data-eid="${e.id}" data-field="valor" value="${e.valor ?? ''}" /></td>
-        <td class="actions">
-          <div class="btn-group">
-            <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
-            <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removeExpense('${e.id}')">Excluir</button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = list.map(e => {
+      const editing = ui.editingExpense.has(e.id);
+      return editing ? renderExpenseEdit(e) : renderExpenseLocked(e);
+    }).join('');
   }
-
   updateExpenseTotal();
 }
-
+function renderExpenseLocked(e) {
+  return `
+    <tr>
+      <td>${formatDate(e.data)}</td>
+      <td>${escapeHtml(e.categoria || '')}</td>
+      <td>${escapeHtml(e.descricao || '')}</td>
+      <td>${formatMoney(e.valor)}</td>
+      <td class="actions-cell">
+        <div class="btn-group">
+          <button class="btn secondary small" onclick="editExpense('${e.id}')">✏️ Editar</button>
+          <button class="btn danger small" onclick="removeExpense('${e.id}')">Excluir</button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+function renderExpenseEdit(e) {
+  return `
+    <tr class="editing">
+      <td><input type="date" data-eid="${e.id}" data-field="data" value="${e.data || ''}" /></td>
+      <td>
+        <select data-eid="${e.id}" data-field="categoria">
+          ${EXPENSE_CATEGORIES.map(c => `<option value="${c}" ${e.categoria === c ? 'selected' : ''}>${c}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="text" data-eid="${e.id}" data-field="descricao" value="${escapeHtml(e.descricao || '')}" /></td>
+      <td><input type="number" step="0.01" data-eid="${e.id}" data-field="valor" value="${e.valor ?? ''}" /></td>
+      <td class="actions-cell">
+        <div class="btn-group">
+          <button class="btn success small" onclick="saveExpense('${e.id}')">💾 Salvar</button>
+          <button class="btn danger small" onclick="removeExpense('${e.id}')">Excluir</button>
+        </div>
+      </td>
+    </tr>
+  `;
+}
 function updateExpenseTotal() {
   const month = document.getElementById('expense-month').value;
-  const total = state.expenses
-    .filter(e => e.mes === month)
-    .reduce((sum, e) => sum + (Number(e.valor) || 0), 0);
+  const total = state.expenses.filter(e => e.mes === month).reduce((s, e) => s + (Number(e.valor) || 0), 0);
   document.getElementById('expense-total-badge').textContent = `Total: ${formatMoney(total)}`;
 }
-
 function addExpense() {
   const month = document.getElementById('expense-month').value || currentMonth();
   const date = `${month}-${String(new Date().getDate()).padStart(2, '0')}`;
-  state.expenses.push({
-    id: uuid(),
-    data: date,
-    mes: month,
-    categoria: 'Aluguel',
-    descricao: '',
-    valor: ''
-  });
+  const e = { id: uuid(), data: date, mes: month, categoria: 'Aluguel', descricao: '', valor: '' };
+  state.expenses.push(e);
+  ui.editingExpense.add(e.id);
   scheduleSave();
   renderExpenses();
 }
-
+function editExpense(eid) { ui.editingExpense.add(eid); renderExpenses(); }
+function saveExpense(eid) { ui.editingExpense.delete(eid); saveNow(); renderExpenses(); }
 function removeExpense(eid) {
+  if (!confirm('Excluir esta despesa?')) return;
   state.expenses = state.expenses.filter(e => e.id !== eid);
+  ui.editingExpense.delete(eid);
   scheduleSave();
   renderExpenses();
 }
 
 // ================================================================
-// TAB: RELATÓRIO
+// TAB RELATÓRIO
 // ================================================================
 function renderReport() {
   const monthInput = document.getElementById('report-month');
   if (!monthInput.value) monthInput.value = currentMonth();
   const month = monthInput.value;
 
-  // Summary
-  const totalAlunos = state.students.length;
+  const totalAlunosCadastrados = state.students.length;
+  const totalAtivos = state.students.filter(s => s.status !== 'drop-out').length;
   let totalRecebido = 0;
   let alunosAtivosNoMes = 0;
   const pendentesRecibo = [];
   const alunosSemPagamento = [];
 
   state.students.forEach(s => {
+    if (s.status === 'drop-out') return;
     const pag = paymentInMonth(s, month);
     if (pag) {
       totalRecebido += Number(pag.valor) || 0;
       alunosAtivosNoMes++;
       if (!pag.reciboEmitido) pendentesRecibo.push(s);
     } else {
-      // apenas conta como "sem pagamento" se o curso começou antes ou neste mês
-      if (s.dataInicioCurso && s.dataInicioCurso.slice(0, 7) <= month) {
-        alunosSemPagamento.push(s);
-      }
+      if (s.dataInicioCurso && s.dataInicioCurso.slice(0, 7) <= month) alunosSemPagamento.push(s);
     }
   });
 
-  const totalDespesas = state.expenses
-    .filter(e => e.mes === month)
-    .reduce((sum, e) => sum + (Number(e.valor) || 0), 0);
-
+  const totalDespesas = state.expenses.filter(e => e.mes === month).reduce((s, e) => s + (Number(e.valor) || 0), 0);
   const saldo = totalRecebido - totalDespesas;
 
-  // Summary cards
-  const summaryHtml = `
+  document.getElementById('report-summary').innerHTML = `
     <div class="summary-card">
-      <div class="label">Alunos ativos (pagaram no mês)</div>
-      <div class="value">${alunosAtivosNoMes}</div>
+      <div class="label">Alunos pagantes no mês</div><div class="value">${alunosAtivosNoMes}</div>
     </div>
     <div class="summary-card">
-      <div class="label">Total de alunos cadastrados</div>
-      <div class="value">${totalAlunos}</div>
+      <div class="label">Total ativos</div><div class="value">${totalAtivos}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Total cadastrados</div><div class="value">${totalAlunosCadastrados}</div>
     </div>
     <div class="summary-card positive">
-      <div class="label">Valor recebido</div>
-      <div class="value">${formatMoney(totalRecebido)}</div>
+      <div class="label">Valor recebido</div><div class="value">${formatMoney(totalRecebido)}</div>
     </div>
     <div class="summary-card negative">
-      <div class="label">Despesas do mês</div>
-      <div class="value">${formatMoney(totalDespesas)}</div>
+      <div class="label">Despesas do mês</div><div class="value">${formatMoney(totalDespesas)}</div>
     </div>
     <div class="summary-card ${saldo < 0 ? 'negative' : 'positive'}">
-      <div class="label">Saldo (recebido − despesas)</div>
-      <div class="value">${formatMoney(saldo)}</div>
+      <div class="label">Saldo</div><div class="value">${formatMoney(saldo)}</div>
     </div>
   `;
-  document.getElementById('report-summary').innerHTML = summaryHtml;
 
-  // Alerts
   let alertsHtml = '';
   if (pendentesRecibo.length > 0) {
-    alertsHtml += `<div class="alert warn">
-      <strong>⚠ Recibos pendentes:</strong> ${pendentesRecibo.length} aluno(s) pagaram mas o recibo ainda não foi emitido:
-      ${pendentesRecibo.map(s => `<span class="badge warn" style="margin-right:4px">${escapeHtml(s.nome || 'Sem nome')}</span>`).join('')}
-    </div>`;
+    alertsHtml += `<div class="alert warn"><strong>⚠ Recibos pendentes:</strong> ${pendentesRecibo.length} aluno(s) pagaram mas o recibo não foi emitido:
+      ${pendentesRecibo.map(s => `<span class="badge warn" style="margin-right:4px">${escapeHtml(s.nome || 'Sem nome')}</span>`).join('')}</div>`;
   }
   if (alunosSemPagamento.length > 0) {
-    alertsHtml += `<div class="alert danger">
-      <strong>💰 Sem pagamento registrado em ${formatMonthLabel(month)}:</strong>
-      ${alunosSemPagamento.map(s => `<span class="badge danger" style="margin-right:4px">${escapeHtml(s.nome || 'Sem nome')}</span>`).join('')}
-    </div>`;
+    alertsHtml += `<div class="alert danger"><strong>💰 Sem pagamento em ${formatMonthLabel(month)}:</strong>
+      ${alunosSemPagamento.map(s => `<span class="badge danger" style="margin-right:4px">${escapeHtml(s.nome || 'Sem nome')}</span>`).join('')}</div>`;
   }
   if (saldo < 0) {
-    alertsHtml += `<div class="alert danger">
-      <strong>📉 Saldo negativo:</strong> as despesas superaram a receita em <span class="danger-text">${formatMoney(saldo)}</span>.
-    </div>`;
+    alertsHtml += `<div class="alert danger"><strong>📉 Saldo negativo:</strong> as despesas superaram a receita em <span class="danger-text">${formatMoney(saldo)}</span>.</div>`;
   }
   document.getElementById('report-alerts').innerHTML = alertsHtml;
 
-  // Detalhamento por aluno
   const studentsHtml = state.students.map(s => {
-    const stats = studentStats(s);
-    const aulasMes = classesInMonth(s, month);
+    const reg = classesInMonth(s, month, true).length;
+    const all = classesInMonth(s, month, false).length;
+    const ext = all - reg;
+    const st = studentStats(s);
     const pag = paymentInMonth(s, month);
-    const saldoClass = stats.saldo > 0 ? 'danger-text' : (stats.saldo < 0 ? 'success-text' : '');
+    const saldoCss = st.saldo > 0 ? 'danger-text' : (st.saldo < 0 ? 'success-text' : '');
+    const dropBadge = s.status === 'drop-out' ? '<span class="badge dropout" style="margin-left:4px">Drop Out</span>' : '';
     return `<tr>
-      <td><strong>${escapeHtml(s.nome || 'Sem nome')}</strong></td>
-      <td>${aulasMes}</td>
-      <td class="${saldoClass}">${stats.saldo}${stats.saldo > 0 ? ' aulas a fazer' : stats.saldo < 0 ? ' em excesso' : ' em dia'}</td>
+      <td><strong>${escapeHtml(s.nome || 'Sem nome')}</strong>${dropBadge}</td>
+      <td>${reg}</td>
+      <td>${ext > 0 ? ext : '—'}</td>
+      <td class="${saldoCss}">${st.saldo}${st.saldo > 0 ? ' a fazer' : st.saldo < 0 ? ' em excesso' : ' em dia'}</td>
       <td>${pag ? formatMoney(pag.valor) : '<span class="badge danger">Não</span>'}</td>
-      <td>${pag ? (pag.reciboEmitido ? '<span class="badge success">✓ Emitido</span>' : '<span class="badge warn">Pendente</span>') : '—'}</td>
+      <td>${pag ? (pag.reciboEmitido
+        ? `<span class="badge success">${escapeHtml(pag.numeroRecibo || '✓ Sim')}</span>`
+        : '<span class="badge warn">Pendente</span>') : '—'}</td>
     </tr>`;
   }).join('');
   document.getElementById('report-students-tbody').innerHTML = studentsHtml ||
-    '<tr><td colspan="5" style="text-align:center;color:var(--muted)">Nenhum aluno.</td></tr>';
+    '<tr><td colspan="6" style="text-align:center;color:var(--muted)">Nenhum aluno.</td></tr>';
 
-  // Despesas detalhadas
-  const expList = state.expenses
-    .filter(e => e.mes === month)
-    .sort((a, b) => (a.data || '').localeCompare(b.data || ''));
+  const expList = state.expenses.filter(e => e.mes === month).sort((a, b) => (a.data || '').localeCompare(b.data || ''));
   const expHtml = expList.map(e => `<tr>
     <td>${formatDate(e.data)}</td>
     <td>${escapeHtml(e.categoria || '')}</td>
@@ -1267,114 +1321,130 @@ function renderReport() {
     <td>${formatMoney(e.valor)}</td>
   </tr>`).join('');
   document.getElementById('report-expenses-tbody').innerHTML = expHtml ||
-    '<tr><td colspan="4" style="text-align:center;color:var(--muted)">Sem despesas neste mês.</td></tr>';
+    '<tr><td colspan="4" style="text-align:center;color:var(--muted)">Sem despesas.</td></tr>';
 }
 
-// ---------- Exportar PDF ----------
+// ---------- PDF detalhado ----------
 function exportReportPDF() {
   const month = document.getElementById('report-month').value || currentMonth();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
-  let y = 20;
+  let y = 18;
   doc.setFontSize(18);
-  doc.text(`Relatório Mensal — ${formatMonthLabel(month)}`, 14, y);
-  y += 10;
-  doc.setFontSize(10);
-  doc.setTextColor(100);
-  doc.text(`Gerado em ${formatDate(todayStr())}`, 14, y);
-  y += 10;
+  doc.text(`Relatório Mensal — ${formatMonthLabel(month)}`, 14, y); y += 8;
+  doc.setFontSize(9); doc.setTextColor(100);
+  doc.text(`Gerado em ${formatDate(todayStr())}`, 14, y); y += 8;
+  doc.setTextColor(0);
 
-  // Summary
-  let totalRecebido = 0, alunosAtivos = 0;
+  // Resumo
+  let totalRecebido = 0, ativosNoMes = 0;
   state.students.forEach(s => {
+    if (s.status === 'drop-out') return;
     const p = paymentInMonth(s, month);
-    if (p) { totalRecebido += Number(p.valor) || 0; alunosAtivos++; }
+    if (p) { totalRecebido += Number(p.valor) || 0; ativosNoMes++; }
   });
   const totalDespesas = state.expenses.filter(e => e.mes === month).reduce((a, b) => a + (Number(b.valor) || 0), 0);
   const saldo = totalRecebido - totalDespesas;
 
-  doc.setTextColor(0);
   doc.setFontSize(11);
-  doc.text(`Alunos cadastrados: ${state.students.length}`, 14, y); y += 6;
-  doc.text(`Alunos ativos no mês: ${alunosAtivos}`, 14, y); y += 6;
-  doc.text(`Valor recebido: ${formatMoney(totalRecebido)}`, 14, y); y += 6;
-  doc.text(`Despesas: ${formatMoney(totalDespesas)}`, 14, y); y += 6;
-  if (saldo < 0) {
-    doc.setTextColor(220, 38, 38);
-    doc.text(`Saldo: ${formatMoney(saldo)}`, 14, y);
-    doc.setTextColor(0);
-  } else {
-    doc.setTextColor(22, 163, 74);
-    doc.text(`Saldo: ${formatMoney(saldo)}`, 14, y);
-    doc.setTextColor(0);
-  }
-  y += 12;
+  doc.text(`Total cadastrados: ${state.students.length}`, 14, y); y += 5;
+  doc.text(`Ativos: ${state.students.filter(s => s.status !== 'drop-out').length}`, 14, y); y += 5;
+  doc.text(`Pagantes no mês: ${ativosNoMes}`, 14, y); y += 5;
+  doc.text(`Recebido: ${formatMoney(totalRecebido)}`, 14, y); y += 5;
+  doc.text(`Despesas: ${formatMoney(totalDespesas)}`, 14, y); y += 5;
+  if (saldo < 0) doc.setTextColor(220,38,38); else doc.setTextColor(22,163,74);
+  doc.text(`Saldo: ${formatMoney(saldo)}`, 14, y); y += 8;
+  doc.setTextColor(0);
 
-  // Por aluno
+  // ==== Pagamentos detalhados do mês ====
   doc.setFontSize(13);
-  doc.text('Detalhamento por Aluno', 14, y); y += 7;
-  doc.setFontSize(9);
-  doc.setDrawColor(200);
+  doc.text('Pagamentos do mês', 14, y); y += 6;
+  doc.setFontSize(9); doc.setDrawColor(200);
   doc.line(14, y, 196, y); y += 4;
-  doc.text('Aluno', 14, y);
-  doc.text('Aulas', 90, y);
-  doc.text('Saldo', 115, y);
-  doc.text('Pago', 145, y);
-  doc.text('Recibo', 175, y);
-  y += 3;
-  doc.line(14, y, 196, y); y += 5;
+  doc.text('Aluno', 14, y); doc.text('Data', 80, y); doc.text('Valor', 110, y);
+  doc.text('Nº Recibo', 140, y); doc.text('Recibo', 180, y);
+  y += 3; doc.line(14, y, 196, y); y += 5;
 
   state.students.forEach(s => {
-    if (y > 270) { doc.addPage(); y = 20; }
-    const stats = studentStats(s);
-    const aulasMes = classesInMonth(s, month);
-    const pag = paymentInMonth(s, month);
-    doc.text((s.nome || 'Sem nome').slice(0, 40), 14, y);
-    doc.text(String(aulasMes), 90, y);
-    if (stats.saldo > 0) {
-      doc.setTextColor(220, 38, 38);
-      doc.text(`+${stats.saldo}`, 115, y);
-      doc.setTextColor(0);
-    } else if (stats.saldo < 0) {
-      doc.setTextColor(22, 163, 74);
-      doc.text(String(stats.saldo), 115, y);
-      doc.setTextColor(0);
-    } else {
-      doc.text('0', 115, y);
-    }
-    doc.text(pag ? formatMoney(pag.valor) : '—', 145, y);
-    doc.text(pag ? (pag.reciboEmitido ? 'Sim' : 'Pendente') : '—', 175, y);
-    y += 6;
+    const p = paymentInMonth(s, month);
+    if (!p) return;
+    if (y > 270) { doc.addPage(); y = 18; }
+    doc.text((s.nome || 'Sem nome').slice(0, 30), 14, y);
+    doc.text(formatDate(p.data), 80, y);
+    doc.text(formatMoney(p.valor), 110, y);
+    doc.text((p.numeroRecibo || '—').slice(0, 18), 140, y);
+    doc.text(p.reciboEmitido ? 'Sim' : 'Pendente', 180, y);
+    y += 5;
   });
+  y += 4;
 
-  // Despesas
-  y += 6;
-  if (y > 250) { doc.addPage(); y = 20; }
+  // ==== Aulas detalhadas por aluno ====
+  if (y > 250) { doc.addPage(); y = 18; }
   doc.setFontSize(13);
-  doc.text('Despesas do Mês', 14, y); y += 7;
+  doc.text('Aulas do mês — por aluno', 14, y); y += 6;
   doc.setFontSize(9);
 
+  state.students.forEach(s => {
+    const aulas = classesInMonth(s, month, false).sort((a, b) => (a.data || '').localeCompare(b.data || ''));
+    if (aulas.length === 0) return;
+    if (y > 260) { doc.addPage(); y = 18; }
+    doc.setFont(undefined, 'bold');
+    doc.text(`${s.nome || 'Sem nome'} — ${aulas.length} aula(s)`, 14, y);
+    doc.setFont(undefined, 'normal');
+    y += 5;
+    aulas.forEach(a => {
+      if (y > 275) { doc.addPage(); y = 18; }
+      doc.text(`${formatDate(a.data)}  •  ${(a.materia || '—').slice(0, 50)}  •  [${tipoLabel(a.tipo)}]`, 18, y);
+      y += 4.5;
+    });
+    y += 2;
+  });
+
+  // ==== Saldos finais ====
+  if (y > 250) { doc.addPage(); y = 18; }
+  y += 4;
+  doc.setFontSize(13);
+  doc.text('Saldo de aulas — por aluno', 14, y); y += 6;
+  doc.setFontSize(9);
+  doc.line(14, y, 196, y); y += 4;
+  doc.text('Aluno', 14, y); doc.text('Status', 80, y); doc.text('Pagos', 115, y);
+  doc.text('Direito', 140, y); doc.text('Feitas (reg)', 165, y); doc.text('Saldo', 195-12, y);
+  y += 3; doc.line(14, y, 196, y); y += 5;
+
+  state.students.forEach(s => {
+    if (y > 270) { doc.addPage(); y = 18; }
+    const st = studentStats(s);
+    doc.text((s.nome || 'Sem nome').slice(0, 28), 14, y);
+    doc.text(s.status === 'drop-out' ? 'Drop Out' : 'Ativo', 80, y);
+    doc.text(String(st.mesesPagos), 115, y);
+    doc.text(String(st.aulasEntitled), 140, y);
+    doc.text(String(st.aulasContam), 165, y);
+    if (st.saldo > 0) { doc.setTextColor(220,38,38); doc.text(`+${st.saldo}`, 183, y); doc.setTextColor(0); }
+    else if (st.saldo < 0) { doc.setTextColor(22,163,74); doc.text(String(st.saldo), 183, y); doc.setTextColor(0); }
+    else doc.text('0', 183, y);
+    y += 5;
+  });
+
+  // ==== Despesas ====
+  if (y > 245) { doc.addPage(); y = 18; }
+  y += 6;
+  doc.setFontSize(13);
+  doc.text('Despesas do mês', 14, y); y += 6;
+  doc.setFontSize(9);
   const expList = state.expenses.filter(e => e.mes === month).sort((a, b) => (a.data || '').localeCompare(b.data || ''));
-  if (expList.length === 0) {
-    doc.setTextColor(100);
-    doc.text('Nenhuma despesa.', 14, y);
-    doc.setTextColor(0);
-  } else {
+  if (expList.length === 0) { doc.setTextColor(100); doc.text('Nenhuma.', 14, y); doc.setTextColor(0); }
+  else {
     doc.line(14, y, 196, y); y += 4;
-    doc.text('Data', 14, y);
-    doc.text('Categoria', 45, y);
-    doc.text('Descrição', 90, y);
-    doc.text('Valor', 170, y);
-    y += 3;
-    doc.line(14, y, 196, y); y += 5;
+    doc.text('Data', 14, y); doc.text('Categoria', 45, y); doc.text('Descrição', 90, y); doc.text('Valor', 170, y);
+    y += 3; doc.line(14, y, 196, y); y += 5;
     expList.forEach(e => {
-      if (y > 270) { doc.addPage(); y = 20; }
+      if (y > 270) { doc.addPage(); y = 18; }
       doc.text(formatDate(e.data), 14, y);
       doc.text((e.categoria || '').slice(0, 20), 45, y);
       doc.text((e.descricao || '').slice(0, 40), 90, y);
       doc.text(formatMoney(e.valor), 170, y);
-      y += 6;
+      y += 5;
     });
   }
 
@@ -1382,7 +1452,7 @@ function exportReportPDF() {
 }
 
 // ================================================================
-// GOOGLE DRIVE SYNC
+// GOOGLE DRIVE
 // ================================================================
 let tokenClient = null;
 let accessToken = null;
@@ -1391,41 +1461,27 @@ let gisInited = false;
 
 function setDriveStatus(cls, text) {
   const el = document.getElementById('drive-status');
-  el.className = '';
-  if (cls) el.className = cls;
+  el.className = ''; if (cls) el.className = cls;
   document.getElementById('drive-status-text').textContent = text;
 }
-
 function initGoogleClients() {
-  if (!state.config.clientId) {
-    setDriveStatus('', 'Configure o Client ID em Configurações');
-    return;
-  }
-
+  if (!state.config.clientId) { setDriveStatus('', 'Configure o Client ID em Configurações'); return; }
   if (typeof gapi !== 'undefined') {
     gapi.load('client', async () => {
       try {
-        await gapi.client.init({
-          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-        });
+        await gapi.client.init({ discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] });
         gapiInited = true;
-      } catch (e) {
-        console.error('gapi init error', e);
-      }
+      } catch (e) { console.error(e); }
     });
   }
-
   if (typeof google !== 'undefined' && google.accounts) {
     try {
       tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: state.config.clientId,
         scope: 'https://www.googleapis.com/auth/drive.file',
-        callback: async (tokenResp) => {
-          if (tokenResp.error) {
-            setDriveStatus('error', 'Erro ao autenticar: ' + tokenResp.error);
-            return;
-          }
-          accessToken = tokenResp.access_token;
+        callback: async (resp) => {
+          if (resp.error) { setDriveStatus('error', 'Erro: ' + resp.error); return; }
+          accessToken = resp.access_token;
           gapi.client.setToken({ access_token: accessToken });
           setDriveStatus('connected', 'Conectado ao Drive');
           await loadFromDrive();
@@ -1433,59 +1489,31 @@ function initGoogleClients() {
       });
       gisInited = true;
       setDriveStatus('', 'Clique em Conectar Drive');
-    } catch (e) {
-      console.error('GIS init error', e);
-    }
+    } catch (e) { console.error(e); }
   }
 }
-
 function connectDrive() {
-  if (!state.config.clientId) {
-    alert('Configure o Google OAuth Client ID na aba Configurações antes.');
-    return;
-  }
-  if (!tokenClient) {
-    initGoogleClients();
-    setTimeout(connectDrive, 800);
-    return;
-  }
+  if (!state.config.clientId) { alert('Configure o Client ID na aba Configurações primeiro.'); return; }
+  if (!tokenClient) { initGoogleClients(); setTimeout(connectDrive, 800); return; }
   tokenClient.requestAccessToken({ prompt: 'consent' });
 }
-
 async function findOrCreateFile() {
   const filename = state.config.filename || 'gerenciamento-alunos.json';
-
   if (state.config.fileId) {
-    try {
-      await gapi.client.drive.files.get({ fileId: state.config.fileId, fields: 'id,name' });
-      return state.config.fileId;
-    } catch (e) {
-      state.config.fileId = null;
-    }
+    try { await gapi.client.drive.files.get({ fileId: state.config.fileId, fields: 'id,name' }); return state.config.fileId; }
+    catch { state.config.fileId = null; }
   }
-
   const resp = await gapi.client.drive.files.list({
-    q: `name='${filename}' and trashed=false`,
-    fields: 'files(id,name)',
-    spaces: 'drive'
+    q: `name='${filename}' and trashed=false`, fields: 'files(id,name)', spaces: 'drive'
   });
-
   if (resp.result.files && resp.result.files.length > 0) {
-    state.config.fileId = resp.result.files[0].id;
-    saveLocal();
-    return state.config.fileId;
+    state.config.fileId = resp.result.files[0].id; saveLocal(); return state.config.fileId;
   }
-
-  // criar novo
-  const createResp = await gapi.client.drive.files.create({
-    resource: { name: filename, mimeType: 'application/json' },
-    fields: 'id'
+  const c = await gapi.client.drive.files.create({
+    resource: { name: filename, mimeType: 'application/json' }, fields: 'id'
   });
-  state.config.fileId = createResp.result.id;
-  saveLocal();
-  return state.config.fileId;
+  state.config.fileId = c.result.id; saveLocal(); return state.config.fileId;
 }
-
 async function loadFromDrive() {
   if (!accessToken) return;
   try {
@@ -1496,63 +1524,42 @@ async function loadFromDrive() {
     if (content && content.trim()) {
       try {
         const data = JSON.parse(content);
-        if (data.students || data.expenses) {
-          // Merge: preferimos versão mais recente se há conflito — aqui substituímos local pela do Drive se há dados lá
-          if (data.students && data.students.length > 0) state.students = data.students;
-          if (data.expenses) state.expenses = data.expenses;
-          saveLocal();
-          renderAll();
-        }
-      } catch (e) {
-        console.warn('Conteúdo do Drive não é JSON válido. Mantendo dados locais.');
-      }
+        if (data.students && data.students.length > 0) state.students = data.students;
+        if (data.expenses) state.expenses = data.expenses;
+        migrate();
+        saveLocal();
+        renderAll();
+      } catch { console.warn('JSON inválido'); }
     }
     setDriveStatus('connected', 'Drive sincronizado');
-  } catch (e) {
-    console.error('Erro loadFromDrive:', e);
-    setDriveStatus('error', 'Erro ao ler do Drive');
-  }
+  } catch (e) { console.error(e); setDriveStatus('error', 'Erro ao ler do Drive'); }
 }
-
 async function syncToDrive() {
   if (!accessToken || !gapiInited) return;
   try {
-    setDriveStatus('saving', 'Salvando no Drive...');
+    setDriveStatus('saving', 'Salvando...');
     const fileId = await findOrCreateFile();
-    const body = JSON.stringify({
-      students: state.students,
-      expenses: state.expenses,
-      savedAt: new Date().toISOString()
-    }, null, 2);
-
+    const body = JSON.stringify({ students: state.students, expenses: state.expenses, savedAt: new Date().toISOString() }, null, 2);
     await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
       method: 'PATCH',
-      headers: {
-        'Authorization': 'Bearer ' + accessToken,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
       body
     });
-
     setDriveStatus('connected', 'Sincronizado: ' + new Date().toLocaleTimeString('pt-PT'));
-  } catch (e) {
-    console.error('Erro syncToDrive:', e);
-    setDriveStatus('error', 'Erro ao salvar no Drive');
-  }
+  } catch (e) { console.error(e); setDriveStatus('error', 'Erro ao salvar'); }
 }
 
 // ================================================================
-// TAB: CONFIG
+// CONFIG
 // ================================================================
 function renderConfig() {
   document.getElementById('cfg-client-id').value = state.config.clientId || '';
   document.getElementById('cfg-filename').value = state.config.filename || 'gerenciamento-alunos.json';
 }
-
 function saveConfig() {
   state.config.clientId = document.getElementById('cfg-client-id').value.trim();
   state.config.filename = document.getElementById('cfg-filename').value.trim() || 'gerenciamento-alunos.json';
-  state.config.fileId = null; // resetar fileId ao trocar filename
+  state.config.fileId = null;
   saveLocal();
   alert('Configurações salvas. Clique em "Conectar Drive" no topo.');
   initGoogleClients();
@@ -1566,12 +1573,9 @@ function exportJSON() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url;
-  a.download = `gerenciamento-alunos-${todayStr()}.json`;
-  a.click();
+  a.href = url; a.download = `gerenciamento-alunos-${todayStr()}.json`; a.click();
   URL.revokeObjectURL(url);
 }
-
 function importJSON(file) {
   const reader = new FileReader();
   reader.onload = (ev) => {
@@ -1580,27 +1584,23 @@ function importJSON(file) {
       if (!confirm('Isso vai substituir os dados atuais. Continuar?')) return;
       state.students = data.students || [];
       state.expenses = data.expenses || [];
+      migrate();
       saveLocal();
       renderAll();
-      alert('Dados importados com sucesso!');
-    } catch (e) {
-      alert('Arquivo inválido: ' + e.message);
-    }
+      alert('Importado!');
+    } catch (e) { alert('Arquivo inválido: ' + e.message); }
   };
   reader.readAsText(file);
 }
-
 function resetAll() {
-  if (!confirm('APAGAR todos os dados (alunos, aulas, pagamentos, despesas)? Esta ação não pode ser desfeita.')) return;
-  if (!confirm('Tem certeza absoluta? Todos os dados serão perdidos.')) return;
-  state.students = [];
-  state.expenses = [];
-  saveLocal();
-  renderAll();
+  if (!confirm('APAGAR todos os dados? Não dá pra desfazer.')) return;
+  if (!confirm('Tem certeza absoluta?')) return;
+  state.students = []; state.expenses = [];
+  saveLocal(); renderAll();
 }
 
 // ================================================================
-// NAVEGAÇÃO E INICIALIZAÇÃO
+// INIT
 // ================================================================
 function switchTab(name) {
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
@@ -1610,79 +1610,54 @@ function switchTab(name) {
   if (name === 'relatorio') renderReport();
   if (name === 'config') renderConfig();
 }
-
 function renderAll() {
-  renderStudents();
-  renderExpenses();
-  renderReport();
-  renderConfig();
+  renderStudents(); renderExpenses(); renderReport(); renderConfig();
 }
 
-function escapeHtml(s) {
-  return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-// ---------- Event bindings ----------
 document.addEventListener('DOMContentLoaded', () => {
   loadLocal();
 
-  // Nav
-  document.querySelectorAll('nav button').forEach(b => {
-    b.addEventListener('click', () => switchTab(b.dataset.tab));
-  });
+  document.querySelectorAll('nav button').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
 
-  // Alunos
   document.getElementById('btn-add-student').addEventListener('click', addStudent);
   document.getElementById('student-search').addEventListener('input', renderStudents);
 
-  // Despesas
+  document.querySelectorAll('#filter-buttons button').forEach(b => {
+    b.addEventListener('click', () => {
+      ui.filter = b.dataset.filter;
+      document.querySelectorAll('#filter-buttons button').forEach(x => x.classList.toggle('active', x.dataset.filter === ui.filter));
+      renderStudents();
+    });
+  });
+
   document.getElementById('expense-month').value = currentMonth();
   document.getElementById('expense-month').addEventListener('change', renderExpenses);
   document.getElementById('btn-add-expense').addEventListener('click', addExpense);
 
-  // Relatório
   document.getElementById('report-month').value = currentMonth();
   document.getElementById('report-month').addEventListener('change', renderReport);
   document.getElementById('btn-export-pdf').addEventListener('click', exportReportPDF);
 
-  // Config
   document.getElementById('btn-save-config').addEventListener('click', saveConfig);
   document.getElementById('btn-export-json').addEventListener('click', exportJSON);
   document.getElementById('btn-import-json').addEventListener('click', () => document.getElementById('import-file').click());
-  document.getElementById('import-file').addEventListener('change', (e) => {
-    if (e.target.files[0]) importJSON(e.target.files[0]);
-  });
+  document.getElementById('import-file').addEventListener('change', (e) => { if (e.target.files[0]) importJSON(e.target.files[0]); });
   document.getElementById('btn-reset').addEventListener('click', resetAll);
 
-  // Drive
   document.getElementById('btn-drive-connect').addEventListener('click', connectDrive);
-
-  // Modal
-  document.getElementById('btn-close-history').addEventListener('click', () => {
-    document.getElementById('history-modal').classList.remove('open');
-  });
+  document.getElementById('btn-close-history').addEventListener('click', () => document.getElementById('history-modal').classList.remove('open'));
   document.getElementById('history-modal').addEventListener('click', (e) => {
     if (e.target.id === 'history-modal') document.getElementById('history-modal').classList.remove('open');
   });
 
   renderAll();
 
-  // Inicializa Google clients quando gapi/gis carregarem
-  const initWhenReady = () => {
-    if (typeof gapi !== 'undefined' && typeof google !== 'undefined' && google.accounts) {
-      initGoogleClients();
-    } else {
-      setTimeout(initWhenReady, 500);
-    }
+  const tryInit = () => {
+    if (typeof gapi !== 'undefined' && typeof google !== 'undefined' && google.accounts) initGoogleClients();
+    else setTimeout(tryInit, 500);
   };
-  initWhenReady();
+  tryInit();
 });
 </script>
-
 </body>
 </html>
