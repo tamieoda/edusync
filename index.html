@@ -784,8 +784,8 @@ function renderAulaLockedRow(s, a, i) {
   const desconta = tipoDescontaSaldo(tipo);
   return `
     <tr>
-      <td>${formatDate(a.data) || '<span style="color:var(--muted)">—</span>'}</td>
-      <td>${escapeHtml(a.materia || '<span style="color:var(--muted)">—</span>')}</td>
+      <td>${a.data ? formatDate(a.data) : '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${a.materia ? escapeHtml(a.materia) : '<span style="color:var(--muted)">—</span>'}</td>
       <td>
         <span class="badge ${desconta ? 'info' : ''}">${tipoLabel(tipo)}</span>
       </td>
@@ -856,7 +856,7 @@ function renderPagLockedRow(s, p, i) {
       <td>${formatDate(p.data) || '—'}</td>
       <td>${formatMonthLabel(p.mes) || '—'}</td>
       <td>${formatMoney(p.valor)}</td>
-      <td>${escapeHtml(p.numeroRecibo || '<span style="color:var(--muted)">—</span>')}</td>
+      <td>${p.numeroRecibo ? escapeHtml(p.numeroRecibo) : '<span style="color:var(--muted)">—</span>'}</td>
       <td>${p.reciboEmitido ? '<span class="badge success">✓ Sim</span>' : '<span class="badge warn">Não</span>'}</td>
       <td class="actions-cell">
         <div class="btn-group">
