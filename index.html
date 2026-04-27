@@ -1665,6 +1665,111 @@ function downloadCSVTemplate() {
   URL.revokeObjectURL(url);
 }
 
+function detectCSVFormat(headers) {
+  const norm = headers.map(normalizeHeader);
+  if (norm.includes('first name') && norm.includes('last name')) return 'google-contacts';
+  if (norm.some(h => h === 'nome' || h === 'aluno' || h === 'nome do aluno')) return 'simple';
+  return null;
+}
+
+function indexOfHeader(headers, candidates) {
+  const norm = headers.map(normalizeHeader);
+  for (const c of candidates) {
+    const i = norm.indexOf(normalizeHeader(c));
+    if (i >= 0) return i;
+  }
+  return -1;
+}
+
+function normalizeName(s) {
+  return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ');
+}
+
+function mapGoogleContactsRow(row, headers) {
+  const get = (names) => {
+    const i = indexOfHeader(headers, names);
+    return i >= 0 ? String(row[i] || '').trim() : '';
+  };
+
+  const first  = get(['First Name']);
+  const middle = get(['Middle Name']);
+  const last   = get(['Last Name']);
+  const nome   = [first, middle, last].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+
+  const email = get(['E-mail 1 - Value']) || get(['E-mail 2 - Value']);
+
+  // Telefones (com label se houver, ex.: "Mãe: 912 778 038")
+  const phone1Lbl = get(['Phone 1 - Label']);
+  const phone1Val = get(['Phone 1 - Value']);
+  const phone2Lbl = get(['Phone 2 - Label']);
+  const phone2Val = get(['Phone 2 - Value']);
+  const fmtPhone = (label, value) => label ? `${label}: ${value}` : value;
+  const phones = [];
+  if (phone1Val) phones.push(fmtPhone(phone1Lbl, phone1Val));
+  if (phone2Val) phones.push(fmtPhone(phone2Lbl, phone2Val));
+  const contato = phones.join(' / ');
+
+  // Endereço: pega o "Formatted" e remove a linha do país (PT/BR)
+  const enderecoRaw = get(['Address 1 - Formatted']);
+  const endereco = enderecoRaw
+    .split(/\r?\n/).map(l => l.trim())
+    .filter(l => l && !/^(PT|BR|US|UK)$/i.test(l))
+    .join(', ');
+
+  // NIF / CPF dentro do campo Notes
+  const notes = get(['Notes']);
+  let contribuinte = '';
+  const nifMatch = notes.match(/NIF\s*([\d\s]+)/i);
+  const cpfMatch = notes.match(/CPF\s*([\d\-\s\.]+)/i);
+  if (nifMatch) contribuinte = nifMatch[1].replace(/\s/g, '').trim();
+  else if (cpfMatch) contribuinte = cpfMatch[1].trim();
+
+  const dataNascimento = parseDateInput(get(['Birthday']));
+
+  // Início do curso: testa vários campos onde a Tamie pode ter guardado a data
+  // (a ordem importa: File As → Organization Name → Event 1 → Custom Field 1)
+  const fileAs       = get(['File As']);
+  const orgName      = get(['Organization Name']);
+  const event1Lbl    = get(['Event 1 - Label']);
+  const event1Val    = get(['Event 1 - Value']);
+  const customLbl    = get(['Custom Field 1 - Label']);
+  const customVal    = get(['Custom Field 1 - Value']);
+  let dataInicioCurso = '';
+  if (parseDateInput(fileAs)) dataInicioCurso = parseDateInput(fileAs);
+  else if (parseDateInput(orgName)) dataInicioCurso = parseDateInput(orgName);
+  else if (/start/i.test(event1Lbl) && parseDateInput(event1Val)) dataInicioCurso = parseDateInput(event1Val);
+  else if (/start/i.test(customLbl) && parseDateInput(customVal)) dataInicioCurso = parseDateInput(customVal);
+
+  return {
+    id: uuid(),
+    status: 'ativo',
+    nome, endereco, contato, contribuinte, email,
+    dataNascimento, dataInicioCurso: dataInicioCurso || todayStr(),
+    mensalidade: '',
+    aulas: [], pagamentos: []
+  };
+}
+
+function mapSimpleCSVRow(row, headers, keyMap, lineNum, errors) {
+  const obj = { id: uuid(), status: 'ativo', aulas: [], pagamentos: [] };
+  CSV_HEADERS.forEach(d => obj[d.key] = '');
+  row.forEach((value, colIdx) => {
+    const key = keyMap[colIdx];
+    if (!key) return;
+    const v = String(value || '').trim();
+    if (key === 'dataNascimento' || key === 'dataInicioCurso') {
+      obj[key] = parseDateInput(v);
+      if (v && !obj[key]) errors.push(`Linha ${lineNum}: data inválida em "${headers[colIdx]}" → "${v}"`);
+    } else if (key === 'mensalidade') {
+      obj[key] = parseMoneyInput(v);
+    } else {
+      obj[key] = v;
+    }
+  });
+  if (!obj.dataInicioCurso) obj.dataInicioCurso = todayStr();
+  return obj;
+}
+
 function importCSVFile(file) {
   const reader = new FileReader();
   reader.onload = (ev) => {
@@ -1673,11 +1778,10 @@ function importCSVFile(file) {
       if (rows.length < 2) { alert('CSV vazio ou sem dados.'); return; }
 
       const headerRow = rows[0];
-      const keyMap = headerRow.map(mapHeaderToKey);
+      const formato = detectCSVFormat(headerRow);
 
-      // Confere se tem coluna nome
-      if (!keyMap.includes('nome')) {
-        alert('O CSV precisa ter uma coluna "nome".\n\nColunas reconhecidas: ' + CSV_HEADERS.map(d => d.key).join(', '));
+      if (!formato) {
+        alert('Formato do CSV não reconhecido.\n\nO CSV precisa ter:\n— uma coluna "nome" (modelo simples), OU\n— colunas "First Name" e "Last Name" (Google Contatos).');
         return;
       }
 
@@ -1685,51 +1789,65 @@ function importCSVFile(file) {
       const novos = [];
       const erros = [];
 
-      dataRows.forEach((row, lineIdx) => {
-        const obj = { id: uuid(), status: 'ativo', aulas: [], pagamentos: [] };
-        // Inicializa todos os campos
-        CSV_HEADERS.forEach(d => obj[d.key] = '');
-        // Popula com os dados da linha
-        row.forEach((value, colIdx) => {
-          const key = keyMap[colIdx];
-          if (!key) return;
-          const v = String(value || '').trim();
-          if (key === 'dataNascimento' || key === 'dataInicioCurso') {
-            obj[key] = parseDateInput(v);
-            if (v && !obj[key]) erros.push(`Linha ${lineIdx + 2}: data inválida em "${headerRow[colIdx]}" → "${v}"`);
-          } else if (key === 'mensalidade') {
-            obj[key] = parseMoneyInput(v);
-          } else {
-            obj[key] = v;
-          }
+      if (formato === 'google-contacts') {
+        dataRows.forEach((row, idx) => {
+          const obj = mapGoogleContactsRow(row, headerRow);
+          if (!obj.nome) { erros.push(`Linha ${idx + 2}: nome em branco — ignorada.`); return; }
+          novos.push(obj);
         });
-
-        if (!obj.nome) {
-          erros.push(`Linha ${lineIdx + 2}: nome em branco — ignorada.`);
-          return;
+      } else { // simple
+        const keyMap = headerRow.map(mapHeaderToKey);
+        if (!keyMap.includes('nome')) {
+          alert('O CSV precisa ter uma coluna "nome".'); return;
         }
-        if (!obj.dataInicioCurso) obj.dataInicioCurso = todayStr();
-        novos.push(obj);
+        dataRows.forEach((row, idx) => {
+          const obj = mapSimpleCSVRow(row, headerRow, keyMap, idx + 2, erros);
+          if (!obj.nome) { erros.push(`Linha ${idx + 2}: nome em branco — ignorada.`); return; }
+          novos.push(obj);
+        });
+      }
+
+      // ===== Dedup por nome (dentro do CSV + contra existentes) =====
+      const existingNames = new Set(state.students.map(s => normalizeName(s.nome)));
+      const seenInCsv = new Set();
+      const finais = [];
+      const dupCsv = [];      // duplicados dentro do próprio CSV
+      const dupExistente = []; // já existem no sistema
+
+      novos.forEach(s => {
+        const k = normalizeName(s.nome);
+        if (seenInCsv.has(k)) { dupCsv.push(s.nome); return; }
+        if (existingNames.has(k)) { dupExistente.push(s.nome); return; }
+        seenInCsv.add(k);
+        finais.push(s);
       });
 
-      if (novos.length === 0) {
-        alert('Nenhum aluno válido encontrado no CSV.\n\nProblemas:\n' + erros.slice(0, 10).join('\n'));
+      if (finais.length === 0) {
+        alert(`Nenhum aluno novo para importar.\n\n` +
+              (dupExistente.length ? `Já existem: ${dupExistente.length}\n` : '') +
+              (dupCsv.length ? `Duplicados no CSV: ${dupCsv.length}\n` : '') +
+              (erros.length ? `Erros: ${erros.length}` : ''));
         return;
       }
 
-      const preview = novos.slice(0, 8).map(s => `• ${s.nome}${s.contato ? ' — ' + s.contato : ''}`).join('\n');
-      const restante = novos.length > 8 ? `\n... e mais ${novos.length - 8}` : '';
-      const errMsg = erros.length > 0 ? `\n\n⚠ Avisos:\n${erros.slice(0, 5).join('\n')}${erros.length > 5 ? `\n... e mais ${erros.length - 5}` : ''}` : '';
+      const preview = finais.slice(0, 10).map(s => `• ${s.nome}${s.contato ? ' — ' + s.contato.split('/')[0].trim() : ''}`).join('\n');
+      const restante = finais.length > 10 ? `\n... e mais ${finais.length - 10}` : '';
+      let avisos = '';
+      if (dupExistente.length) avisos += `\n\n⏭ ${dupExistente.length} já existem (puladas): ${dupExistente.slice(0, 5).join(', ')}${dupExistente.length > 5 ? '...' : ''}`;
+      if (dupCsv.length) avisos += `\n\n🔁 ${dupCsv.length} duplicadas no CSV (puladas): ${dupCsv.slice(0, 5).join(', ')}${dupCsv.length > 5 ? '...' : ''}`;
+      if (erros.length) avisos += `\n\n⚠ ${erros.length} aviso(s):\n${erros.slice(0, 3).join('\n')}${erros.length > 3 ? '\n...' : ''}`;
+
+      const formatoLabel = formato === 'google-contacts' ? 'Google Contatos' : 'modelo simples';
 
       const ok = confirm(
-        `Importar ${novos.length} aluno(s)?\n\n${preview}${restante}${errMsg}\n\nOs alunos serão ADICIONADOS aos existentes (não substituem).`
+        `Importar ${finais.length} aluno(s) — formato detectado: ${formatoLabel}\n\n${preview}${restante}${avisos}\n\nOs alunos serão ADICIONADOS aos existentes.`
       );
       if (!ok) return;
 
-      state.students.push(...novos);
+      state.students.push(...finais);
       scheduleSave();
       renderStudents();
-      alert(`✓ ${novos.length} aluno(s) importado(s) com sucesso.`);
+      alert(`✓ ${finais.length} aluno(s) importado(s).`);
     } catch (e) {
       console.error(e);
       alert('Erro ao processar CSV: ' + e.message);
