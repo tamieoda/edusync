@@ -241,7 +241,9 @@
     letter-spacing: 0.5px;
   }
   table td input, table td select { font-size: 13px; padding: 6px 8px; }
-  table td.actions { width: 80px; text-align: right; }
+  table td.actions { width: 170px; text-align: right; }
+  table td.actions .btn-group { display: flex; gap: 4px; justify-content: flex-end; }
+  .btn.saved-flash { background: #16a34a !important; transform: scale(1.05); transition: all 0.2s; }
 
   .checkbox-field {
     display: flex;
@@ -662,28 +664,17 @@ function paymentInMonth(student, monthStr) {
 // ================================================================
 
 // ---------- Listener global de inputs (core anti-cursor-bug) ----------
+// IMPORTANTE: checa do mais específico para o mais genérico.
+// Inputs de aula/pagamento também têm data-sid e data-field, então
+// precisam ser verificados ANTES do check genérico de campo do aluno.
 document.addEventListener('input', (e) => {
   const t = e.target;
   if (!(t.matches('input, select, textarea'))) return;
 
-  // Campos de aluno
-  if (t.dataset.sid && t.dataset.field) {
+  // 1. Campos de AULA (mais específico primeiro)
+  if (t.dataset.sid && t.dataset.aulaIdx !== undefined) {
     const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s) return;
-    if (t.type === 'number') {
-      s[t.dataset.field] = t.value === '' ? '' : Number(t.value);
-    } else {
-      s[t.dataset.field] = t.value;
-    }
-    scheduleSave();
-    updateStudentStats(s.id);
-    return;
-  }
-
-  // Campos de aula (attendance) dentro de aluno
-  if (t.dataset.aulaIdx !== undefined && t.dataset.sid) {
-    const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s) return;
+    if (!s || !s.aulas) return;
     const idx = Number(t.dataset.aulaIdx);
     if (!s.aulas[idx]) return;
     s.aulas[idx][t.dataset.field] = t.value;
@@ -692,10 +683,10 @@ document.addEventListener('input', (e) => {
     return;
   }
 
-  // Campos de pagamento dentro de aluno
-  if (t.dataset.pagIdx !== undefined && t.dataset.sid) {
+  // 2. Campos de PAGAMENTO
+  if (t.dataset.sid && t.dataset.pagIdx !== undefined) {
     const s = state.students.find(x => x.id === t.dataset.sid);
-    if (!s) return;
+    if (!s || !s.pagamentos) return;
     const idx = Number(t.dataset.pagIdx);
     if (!s.pagamentos[idx]) return;
     const field = t.dataset.field;
@@ -710,7 +701,21 @@ document.addEventListener('input', (e) => {
     return;
   }
 
-  // Campos de despesa
+  // 3. Campos diretos do ALUNO (só se não for aula nem pagamento)
+  if (t.dataset.sid && t.dataset.field) {
+    const s = state.students.find(x => x.id === t.dataset.sid);
+    if (!s) return;
+    if (t.type === 'number') {
+      s[t.dataset.field] = t.value === '' ? '' : Number(t.value);
+    } else {
+      s[t.dataset.field] = t.value;
+    }
+    scheduleSave();
+    updateStudentStats(s.id);
+    return;
+  }
+
+  // 4. Campos de DESPESA
   if (t.dataset.eid && t.dataset.field) {
     const exp = state.expenses.find(x => x.id === t.dataset.eid);
     if (!exp) return;
@@ -748,6 +753,26 @@ function scheduleSave() {
   saveTimer = setTimeout(() => {
     syncToDrive().catch(err => console.warn('Drive sync failed:', err));
   }, 2000);
+}
+
+// ---------- Save imediato com feedback visual (botão Salvar) ----------
+function confirmSaveBtn(btn) {
+  // Garante que qualquer edição pendente já foi para o state (event 'input' já disparou)
+  saveLocal();
+  // Cancela o debounce e envia para o Drive agora
+  if (saveTimer) clearTimeout(saveTimer);
+  syncToDrive().catch(err => console.warn('Drive sync failed:', err));
+
+  const originalText = btn.textContent;
+  const originalDisabled = btn.disabled;
+  btn.textContent = '✓ Salvo';
+  btn.classList.add('saved-flash');
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.classList.remove('saved-flash');
+    btn.disabled = originalDisabled;
+  }, 1500);
 }
 
 // ================================================================
@@ -807,6 +832,10 @@ function renderStudentCard(s) {
           <label>Mensalidade (€)</label>
           <input type="number" step="0.01" data-sid="${s.id}" data-field="mensalidade" value="${s.mensalidade ?? ''}" />
         </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <button class="btn success" onclick="confirmSaveBtn(this)">💾 Salvar dados do aluno</button>
       </div>
 
       <div class="stats" id="stats-${s.id}">
@@ -876,7 +905,12 @@ function renderAulasRows(s) {
     <tr>
       <td><input type="date" data-sid="${s.id}" data-aula-idx="${i}" data-field="data" value="${a.data || ''}" /></td>
       <td><input type="text" data-sid="${s.id}" data-aula-idx="${i}" data-field="materia" value="${escapeHtml(a.materia || '')}" placeholder="Ex.: Present Perfect" /></td>
-      <td class="actions"><button class="btn danger" style="padding:4px 8px;font-size:12px" onclick="removeAula('${s.id}', ${i})">Excluir</button></td>
+      <td class="actions">
+        <div class="btn-group">
+          <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
+          <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removeAula('${s.id}', ${i})">Excluir</button>
+        </div>
+      </td>
     </tr>
   `).join('');
 }
@@ -897,7 +931,12 @@ function renderPagamentosRows(s) {
           <span>Emitido</span>
         </label>
       </td>
-      <td class="actions"><button class="btn danger" style="padding:4px 8px;font-size:12px" onclick="removePagamento('${s.id}', ${i})">Excluir</button></td>
+      <td class="actions">
+        <div class="btn-group">
+          <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
+          <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removePagamento('${s.id}', ${i})">Excluir</button>
+        </div>
+      </td>
     </tr>
   `).join('');
 }
@@ -1077,7 +1116,12 @@ function renderExpenses() {
         </td>
         <td><input type="text" data-eid="${e.id}" data-field="descricao" value="${escapeHtml(e.descricao || '')}" /></td>
         <td><input type="number" step="0.01" data-eid="${e.id}" data-field="valor" value="${e.valor ?? ''}" /></td>
-        <td class="actions"><button class="btn danger" style="padding:4px 8px;font-size:12px" onclick="removeExpense('${e.id}')">Excluir</button></td>
+        <td class="actions">
+          <div class="btn-group">
+            <button class="btn success" style="padding:4px 10px;font-size:12px" onclick="confirmSaveBtn(this)">Salvar</button>
+            <button class="btn danger" style="padding:4px 10px;font-size:12px" onclick="removeExpense('${e.id}')">Excluir</button>
+          </div>
+        </td>
       </tr>
     `).join('');
   }
